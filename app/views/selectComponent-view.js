@@ -56,6 +56,10 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                     $( this ).addClass( "disabled" );
                 });
 
+                $body.find('.newElementWrapper ').each(function() {
+                    $( this ).addClass( "shaded" );
+                });
+
 
 
                 $body.find('.new-panel-example .textFieldName').focus();
@@ -146,6 +150,9 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 $body.find('.new-panel-example .panel-body .well').addClass('hide');
                 $body.find('.add-fields-button-group button').each(function() {
                     $( this ).removeClass( "disabled" ).removeClass('btn-warning');
+                });
+                $body.find('.newElementWrapper ').each(function() {
+                    $( this ).removeClass( "shaded" );
                 });
 
                 $footer.find('button').each(function(){

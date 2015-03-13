@@ -8335,7 +8335,7 @@ button.close {
   margin-right: -5px;
 }
 .centered {
-  margin-left: 3px;
+  margin-left: 45px;
 }
 .new-panel-example {
   margin-top: 14px;
@@ -8369,4 +8369,8 @@ button.close {
 }
 .table-condensed tbody tr td {
   padding: 0px;
+}
+.shaded {
+  opacity: 0.4;
+  pointer-events: none;
 }

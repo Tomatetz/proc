@@ -1,8 +1,6 @@
-<button type="button" class="btn btn-info">Info</button>
 {{ model.paper }}
-<input type="text" type="text" class="form-control">
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
     Launch demo modal
 </button>
 
@@ -14,11 +12,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Выберите действие</h4>
             </div>
-            <div class="modal-body menu-body">
+            <div class="modal-body menu-body ">
                 <div class="btn-group centered menuButtons" role="group">
-                    <button type="button" class="btn btn-default" data-action="ChooseForm">Выбрать форму</button>
-                    <button type="button" class="btn btn-default" data-action="EditForm">Редактировать форму</button>
-                    <button type="button" class="btn btn-default" data-action="CreateForm">Создать форму</button>
+                    <button type="button" class="btn btn-default" data-action="ChooseForm"><i class="fa fa-external-link-square"></i> Выбрать форму</button>
+                    <button type="button" class="btn btn-default" data-action="EditForm"><i class="fa fa-pencil-square-o"></i> Редактировать форму</button>
+                    <button type="button" class="btn btn-default" data-action="CreateForm"><i class="fa fa-plus-square"></i> Создать форму</button>
                 </div>
             </div>
             <div class="modal-footer menu-footer hide">
