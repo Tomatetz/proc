@@ -7577,3 +7577,15 @@ button.close {
   margin-left: -5px;
   margin-right: -5px;
 }
+.menu-header {
+  border-radius: 6px 6px 0px 0px;
+}
+.centered {
+  margin-left: 3px;
+}
+.new-panel-example {
+  margin-top: 4px;
+}
+.textFieldName {
+  margin-bottom: 4px;
+}

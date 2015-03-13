@@ -36,14 +36,14 @@ require.config({
 			deps : ['jquery', 'bootstrap']
 		},
 		app : {
-			deps : ['jquery', 'underscore', 'backbone', 'marionette'],
+			deps : ['jquery', 'underscore', 'backbone', 'marionette']
 		},
 		router : {
-			deps : ['app'],
+			deps : ['app']
 		},
 		templates : {
 			deps : ['handlebars']}
-		},    
+		}
 });
 
 require([
