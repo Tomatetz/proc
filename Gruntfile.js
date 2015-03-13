@@ -109,6 +109,22 @@ module.exports = function(grunt) {
                     'app': { src: 'bower_components/requirejs/require.js' }
                 }
             }
+        },
+        express: {
+            custom: {
+                options: {
+                    port: 9001,
+                    server: './app/temp'
+                }
+            }
+        },
+        connect: {
+            server: {
+                options: {
+                    index: 'index.html',
+                    port: 9001
+                }
+            }
         }
     });
 
@@ -123,7 +139,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-file-blocks');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-	
+    grunt.loadNpmTasks('grunt-express');
+
+    grunt.registerTask('myServer', ['express', 'express-keepalive']);
+
     grunt.registerTask('build', [
         'jshint',
         'clean:dist',
