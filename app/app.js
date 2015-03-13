@@ -22,10 +22,9 @@ function(formView) {
         urlRoot: 'http://localhost:9001/form/3s2'
     });
     var forms = new Forms();
-
+/*
     $.when(forms.fetch()).then(
-        function (status) {
-            //console.log(forms, status);
+        function (status) {*/
 
             var formView1 = new formView({
                 model: forms,
@@ -37,7 +36,10 @@ function(formView) {
 
                 forms.fetch();
             });*/
-        });
+
+            /*
+        }
+    );*/
 
     return app;
 });

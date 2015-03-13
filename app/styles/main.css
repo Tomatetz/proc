@@ -8334,9 +8334,6 @@ button.close {
   margin-left: -5px;
   margin-right: -5px;
 }
-.menu-header {
-  border-radius: 6px 6px 0px 0px;
-}
 .centered {
   margin-left: 3px;
 }
@@ -8351,4 +8348,25 @@ button.close {
 }
 #myModal .modal-dialog {
   z-index: 1050;
+}
+#myModal .menu-header {
+  border-radius: 6px 6px 0px 0px;
+  background-color: #C8E1E8;
+}
+.newElementWrapper {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 4px;
+}
+.newElementWrapper:hover {
+  background-color: #E0F2F5;
+}
+[data-toggle="tooltip"][data-original-title="1/2 ширины окна"] {
+  margin-left: 10px;
+}
+.sizeRadioButtons {
+  margin-top: 7px;
+}
+.table-condensed tbody tr td {
+  padding: 0px;
 }

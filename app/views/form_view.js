@@ -6,7 +6,8 @@ define(['views/selectComponent-view'],
                 'click [data-action="ChooseForm"]': 'ChooseForm',
                 'click [data-action="EditForm"]': 'EditForm',
                 'click [data-action="CreateForm"]': 'CreateForm',
-                'click [data-action="Back"]': 'buttonClicked'
+                'click [data-action="Back"]': 'buttonClicked',
+                'click [data-action="Save"]': 'saveForm'
             },
             template: "app/templates/form.hbs",
             initialize: function () {
@@ -19,6 +20,9 @@ define(['views/selectComponent-view'],
                 });
                 //console.log(this);
             },
+            saveForm: function(){
+
+            },
             buttonClicked: function(color, e){
                 var $header = this.$el.find('.menu-header'),
                     $body = this.$el.find('.menu-body'),
@@ -30,11 +34,10 @@ define(['views/selectComponent-view'],
                     $body.find('.formsCollecion').remove();
                     $body.find('.select-component').remove();
                     $header.find('#myModalLabel').html('Выберите действие');
-                    $header.css('backgroundColor','#fff');
                 } else {
                     var buttonText = e.target.innerHTML;
                     $header.find('#myModalLabel').html(buttonText);
-                    $header.css('backgroundColor',color);
+                    //$header.css('backgroundColor',color);
                 }
 
                 $body.find('.menuButtons').toggleClass('hide');
@@ -51,11 +54,15 @@ define(['views/selectComponent-view'],
                 this.buttonClicked(buttonColor,e);
             },
             CreateForm: function (e) {
-                var $body = this.$el.find('.menu-body');
-                var buttonColor = '#98D9EC';
+                var $body = this.$el.find('.menu-body'),
+                    $footer = this.$el.find('.menu-footer');
+                var buttonColor = '#C8E1E8';
                 this.buttonClicked(buttonColor,e);
 
-                var selectComponent = new selectComponentView({$body:$body});
+                var selectComponent = new selectComponentView({
+                    $body:$body,
+                    $footer:$footer
+                });
                 selectComponent.render();
                 $body.append(selectComponent.$el)
             },
