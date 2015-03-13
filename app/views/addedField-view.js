@@ -14,6 +14,8 @@ define([],
                 var that = this;
                 var fieldType = this.options.fieldType;
                 var options = this.options.optionsNames;
+                var fieldName = this.options.fieldName;
+
                 this.$el.find('.newElementWrapper').addClass(this.options.fieldSize);
                 if(fieldType==='date'){
                     this.$el.find('input').datepicker({
@@ -25,12 +27,12 @@ define([],
                     _.each(options, function(option){
                         that.$el.find('.newSelect').append('<option>'+option+'</option>')
                     });
-                } else if(fieldType==='checkbox'){
+                } else if(fieldType==='radio'){
                     _.each(options, function(option){
-                        console.log(option);
-                        that.$el.find('.checkbox-group').append('<div class="checkbox"><label><input type="checkbox" value="">'+option+'</label></div>')
-                        //that.$el.find('.checkbox').append('<input type="checkbox" value="'+option+'"><label for="CheckboxData1" class="itemLabel">'+option+'</label>')
+                        that.$el.find('.radio-group').append('<div class="radio"><label><input type="radio" name="newRadioField" value="'+option+'">'+option+'</label></div>');
                     });
+                } else if(fieldType==='checkbox'){
+                    that.$el.find('.checkbox').append('<label><input type="checkbox" name="newCheckboxField" value="'+fieldName+'">'+fieldName+'</label>');
                 }
             }
         });

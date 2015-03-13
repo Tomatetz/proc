@@ -52,6 +52,12 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 var $body = this.options.$body;
                 this.addFieldSelected();
                 this.type='checkbox';
+                $body.find('.example-inner').append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
+            },
+            addRadio: function(){
+                var $body = this.options.$body;
+                this.addFieldSelected();
+                this.type='radio';
                 var addExtendedField = new addFieldExtendedView({fieldType:this.type});
                 $body.find('.example-inner').append(addExtendedField.render().$el);
             },
@@ -65,13 +71,14 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 this.$el.find('.list-group-item').each(function(){
                     optionsNames.push($( this ).attr('value'));
                 });
-                var isExtended = ((fieldType=='checkbox'||fieldType=='radio'||fieldType=='select')&&optionsNames.length==0)?true:false;
+                var isExtended = ((fieldType=='radio'||fieldType=='select')&&optionsNames.length<2)?true:false;
 
                 if(fieldName!==''&&!isExtended){
                     var newField = new addedFieldView({
                         fieldType: fieldType,
                         fieldSize: fieldSize||'col-md-6',
-                        optionsNames: optionsNames
+                        optionsNames: optionsNames,
+                        fieldName: fieldName
                     });
                     newField.render();
                     newField.$el.find('.newFieldName').html(fieldName)
