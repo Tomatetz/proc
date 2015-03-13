@@ -35,7 +35,7 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 var $body = this.options.$body;
                 this.addFieldSelected();
                 this.type='textfield';
-                $body.find('.example-inner').append('<input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
+                $body.find('.example-inner').append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
             },
             addDate: function(){
                 this.addTextfield();
@@ -53,7 +53,8 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 var $body = this.options.$body;
                 this.addFieldSelected();
                 this.type='checkbox';
-                $body.find('.example-inner').append('<input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
+                $body.find('.example-inner')
+                    .append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
             },
             addNewField: function(){
                 var $body = this.options.$body;

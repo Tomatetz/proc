@@ -3,11 +3,11 @@ define([],
 
         addFieldExtended = Backbone.Marionette.ItemView.extend({
             events: {
-                'click .addOption': 'addOption'
+                'click .addOption': 'addOption',
+                'click .btn-danger': 'btnDanger'
             },
             template: "app/templates/extended-field.hbs",
             initialize: function () {
-                //this.template = "app/templates/extended-field.hbs";
             },
             onRender: function () {
 
@@ -19,9 +19,13 @@ define([],
 
                 $newOption.find('.optionName').val('');
 
-                this.$el.parent().find('.selectOptionInput').append(
-                '<li class="list-group-item">'+optionName+'<button type="button" class="btn btn-warning btn-sm pull-right">-</button></li>');
-                //if()
+                if(optionName!==''){
+                    this.$el.parent().find('.list-group').append(
+                        '<li class="list-group-item">'+optionName+'<button type="button" class="btn btn-danger btn-xs pull-right">-</button></li>');
+                }
+            },
+            btnDanger:function(e){
+                $(e.target).parent().remove();
             }
         });
 
