@@ -1,9 +1,12 @@
 <div class="pull-right add-fields-button-group" role="group" aria-label="...">
     <button type="button" class="btn btn-default" data-action="addTextfield" data-toggle="tooltip" data-placement="top" title="Добавить текстовое поле">
-        <i class="fa fa-align-justify"></i>
+        <i class="fa fa-quote-right"></i>
     </button>
     <button type="button" class="btn btn-default" data-action="addDate" data-toggle="tooltip" data-placement="top" title="Добавить календарь">
         <i class="fa fa-calendar"></i>
+    </button>
+    <button type="button" class="btn btn-default" data-action="addSelect" data-toggle="tooltip" data-placement="top" title="Добавить выпадающтй список">
+        <i class="fa fa-list-ul"></i>
     </button>
     <button type="button" class="btn btn-default" data-action="addCheckbox" data-toggle="tooltip" data-placement="top" title="Добавить флажок">
         <i class="fa fa-check-square"></i>
@@ -22,6 +25,15 @@
             <div class="example-inner"></div>
             <div class="row"></div>
             <div class="form-group new-field-buttons">
+                <div class="form-group sizeRadioButtons">
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="col-md-12" checked> По ширине окна
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="col-md-6"> 1/2 ширины окна
+                    </label>
+                </div>
+
                 <div class="btn-group pull-right" role="group">
                     <button type="button" class="btn btn-default" data-action="addNewField">Добавить</button>
                     <button type="button" class="btn btn-default" data-action="cancelNewField">Отмена</button>

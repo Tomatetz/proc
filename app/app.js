@@ -25,7 +25,7 @@ function(formView) {
 
     $.when(forms.fetch()).then(
         function (status) {
-            console.log(forms, status);
+            //console.log(forms, status);
 
             var formView1 = new formView({
                 model: forms,
