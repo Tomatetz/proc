@@ -46,26 +46,32 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 this.addFieldSelected();
                 this.type='select';
                 var addExtendedField = new addFieldExtendedView({fieldType:this.type});
-                $body.find('.example-inner').append(addExtendedField.render().$el)
-                //$body.find('.example-inner').append('<input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
+                $body.find('.example-inner').append(addExtendedField.render().$el);
             },
             addCheckbox: function(){
                 var $body = this.options.$body;
                 this.addFieldSelected();
                 this.type='checkbox';
-                $body.find('.example-inner')
-                    .append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
+                var addExtendedField = new addFieldExtendedView({fieldType:this.type});
+                $body.find('.example-inner').append(addExtendedField.render().$el);
             },
             addNewField: function(){
-                var $body = this.options.$body;
-                var fieldType = this.type;
-                var fieldName = this.$el.find('.textFieldName').val();
-                var fieldSize = this.$el.find('.sizeRadioButtons input:radio:checked').val();
-                if(fieldName!==''){
+                var $body = this.options.$body,
+                    fieldType = this.type,
+                    fieldName = this.$el.find('.textFieldName').val(),
+                    fieldSize = this.$el.find('.sizeRadioButtons input:radio:checked').val(),
+                    optionsNames = [];
 
+                this.$el.find('.list-group-item').each(function(){
+                    optionsNames.push($( this ).attr('value'));
+                });
+                var isExtended = ((fieldType=='checkbox'||fieldType=='radio'||fieldType=='select')&&optionsNames.length==0)?true:false;
+
+                if(fieldName!==''&&!isExtended){
                     var newField = new addedFieldView({
-                        fieldType:fieldType,
-                        fieldSize:fieldSize||'col-md-6'
+                        fieldType: fieldType,
+                        fieldSize: fieldSize||'col-md-6',
+                        optionsNames: optionsNames
                     });
                     newField.render();
                     newField.$el.find('.newFieldName').html(fieldName)

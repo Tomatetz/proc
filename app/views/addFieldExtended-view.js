@@ -21,7 +21,7 @@ define([],
 
                 if(optionName!==''){
                     this.$el.parent().find('.list-group').append(
-                        '<li class="list-group-item">'+optionName+'<button type="button" class="btn btn-danger btn-xs pull-right">-</button></li>');
+                        '<li class="list-group-item" value="'+optionName+'">'+optionName+'<button type="button" class="btn btn-danger btn-xs pull-right">-</button></li>');
                 }
             },
             btnDanger:function(e){
