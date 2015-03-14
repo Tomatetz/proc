@@ -1,11 +1,10 @@
-define([],
-    function () {
+define(['views/editFieldButtons-view'],
+    function (editFieldButtonsView) {
 
         addedField = Backbone.Marionette.ItemView.extend({
             events: {
                 'click [ data-action="removeField"]': 'removeField'
             },
-            //template: "app/templates/new-field-textField.hbs",
             initialize: function () {
                 var fieldType = this.options.fieldType;
                 this.template = "app/templates/new-field-"+fieldType+".hbs";
@@ -15,6 +14,15 @@ define([],
                 var fieldType = this.options.fieldType;
                 var options = this.options.optionsNames;
                 var fieldName = this.options.fieldName;
+
+                var editField = new editFieldButtonsView({
+                });
+                editField.render();
+
+                this.$el.find('.edit-buttons-wrapper').append(editField.$el);
+                $('[data-toggle="tooltip"]').tooltip();
+                console.log(editField.$el.find('[data-toggle="tooltip"]').length);
+
 
                 this.$el.find('.newElementWrapper').addClass(this.options.fieldSize);
                 if(fieldType==='date'){
@@ -33,17 +41,16 @@ define([],
                     });
                 } else if(fieldType==='checkbox'){
                     that.$el.find('.checkbox').append('<label><input type="checkbox" name="newCheckboxField" value="'+fieldName+'">'+fieldName+'</label>');
-                    this.$el.find('.form-group').before('<button type="button" class="btn btn-danger btn-xs pull-right" data-action="removeField">-</button>');
                 }
-                this.$el.find('.newFieldName').after('<button type="button" class="btn btn-danger btn-xs pull-right" data-action="removeField">-</button>');
+
             },
             removeField:function(e){
-                if(this.options.fieldType==='checkbox'){
-                    $(e.target).parent().parent().remove();
-                } else{
-                    $(e.target).parent().parent().parent().remove();
+                var fieldType = this.options.fieldType;
+                this.$el.remove();
+                if(fieldType==='radio'||fieldType==='select'){
+                    $(e.target).parent().parent().parent().parent().parent().parent().remove();
                 }
-                this.trigger("removed")
+                this.trigger("removed");
             }
         });
 

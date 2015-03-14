@@ -15,9 +15,9 @@ function(formView) {
 	layout = new Layout();
 	
 	layout.render();
-    //var form = formView.render();
+    var form = formView.render();
     //layout.$el.find('.main-wrapper').append(form.$el);
-
+    forms.fetch();
     var Forms = Backbone.Model.extend({
         urlRoot: 'http://localhost:9001/form/3s2'
     });

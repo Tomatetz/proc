@@ -3,8 +3,8 @@ define([],
 
         addFieldExtended = Backbone.Marionette.ItemView.extend({
             events: {
-                'click .addOption': 'addOption',
-                'click .btn-danger': 'btnDanger'
+                'click .addOption': 'addOption'
+               // 'click .btn-danger': 'btnDanger'
             },
             template: "app/templates/extended-field.hbs",
             initialize: function () {

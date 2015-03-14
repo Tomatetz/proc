@@ -84,7 +84,10 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
             addSelect: function(e){
                 var $body = this.options.$body;
                 this.type='select';
-                var addExtendedField = new addFieldExtendedView({fieldType:this.type});
+                var addExtendedField = new addFieldExtendedView({
+                    fieldType:this.type,
+                    $body: $body
+                });
                 $body.find('.example-inner').append(addExtendedField.render().$el);
                 this.turnOnSizeRadio(true);
                 this.addFieldSelected(e);
@@ -99,7 +102,10 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
             addRadio: function(e){
                 var $body = this.options.$body;
                 this.type='radio';
-                var addExtendedField = new addFieldExtendedView({fieldType:this.type});
+                var addExtendedField = new addFieldExtendedView({
+                    fieldType:this.type,
+                    $body: $body
+                });
                 $body.find('.example-inner').append(addExtendedField.render().$el);
                 this.addFieldSelected(e);
                 this.turnOnSizeRadio(false);
@@ -108,14 +114,12 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 var $body = this.options.$body,
                     fieldType = this.type,
                     fieldName = this.$el.find('.textFieldName').val(),
-                    fieldSize = fieldName.length<22 ? this.$el.find('.sizeRadioButtons input:radio:checked').val() : 'col-md-12',
+                    fieldSize = fieldName.length<18 ? this.$el.find('.sizeRadioButtons input:radio:checked').val() : 'col-md-12',
                     optionsNames = [],
                     that=this;
 
-                if(fieldType=='checkbox'){
-                    fieldSize = fieldName.length<22 ? 'col-md-6' : 'col-md-12';
-                } else if(fieldType=='radio'){
-                    fieldSize = 'col-md-6';
+                if(fieldType === 'checkbox'||fieldType === 'radio'){
+                    fieldSize = fieldName.length<18 ? 'col-md-6' : 'col-md-12';
                 }
 
                 this.$el.find('.list-group-item').each(function(){
@@ -136,8 +140,6 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                         that.isFormEmpty();
                     });
                     $body.find('.new-panel-example .panel-body').append(newField.$el);
-
-
 
                     this.cancelNewField();
                 }
