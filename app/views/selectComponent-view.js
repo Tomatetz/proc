@@ -10,7 +10,9 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 'click [data-action="addCheckbox"]': 'addCheckbox',
                 'click [data-action="addRadio"]': 'addRadio',
                 'click [data-action="addNewField"]': 'addNewField',
-                'click [data-action="cancelNewField"]': 'cancelNewField'
+                'click [data-action="cancelNewField"]': 'cancelNewField',/*
+                'click [ data-action="moveFieldUp"]': 'moveFieldUp',*/
+                'click .newEl': 'newElClicked'
             },
             template: "app/templates/select-component.hbs",
             initialize: function () {
@@ -60,8 +62,6 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                     $( this ).addClass( "shaded" );
                 });
 
-
-
                 $body.find('.new-panel-example .textFieldName').focus();
 
                 this.isFormEmpty();
@@ -107,6 +107,7 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                     $body: $body
                 });
                 $body.find('.example-inner').append(addExtendedField.render().$el);
+
                 this.addFieldSelected(e);
                 this.turnOnSizeRadio(false);
             },
@@ -128,17 +129,9 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 var isExtended = ((fieldType=='radio'||fieldType=='select')&&optionsNames.length<2)?true:false;
 
                 if(fieldName!==''&&!isExtended){
-                    var newField = new addedFieldView({
-                        fieldType: fieldType,
-                        fieldSize: fieldSize||'col-md-6',
-                        optionsNames: optionsNames,
-                        fieldName: fieldName
-                    });
-                    newField.render();
-                    newField.$el.find('.newFieldName').html(fieldName);
-                    newField.on('removed',function(){
-                        that.isFormEmpty();
-                    });
+
+                    var newField = this.makeNewField(fieldType, fieldSize, optionsNames, fieldName);
+
                     $body.find('.new-panel-example .panel-body').append(newField.$el);
 
                     this.cancelNewField();
@@ -175,7 +168,64 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 } else {
                     this.$el.find('.sizeRadioButtons').hide();
                 }
+            },
+            moveField: function(field){
+                var element = field[0],
+                    direction = field[1];
+
+                var index = this.$el.find('.newEl').index(element);
+                var fieldType = element.find('.newElementWrapper').attr('fieldtype'),
+                    fieldName = fieldType =='checkbox' ?
+                        element.find('[name="newCheckboxField"]').attr('value') : element.find('.newFieldName').html(),
+                    fieldSize = element.find('.newElementWrapper').attr('fieldsize'),
+                    optionsNames = [];
+                var newField = this.makeNewField(fieldType, fieldSize, null, fieldName);
+
+                //console.log(fieldType, fieldSize, null, fieldName);
+                if(direction === 'Up'){
+                    if(index!==0){
+                        $( this.$el.find('.newEl')[index-1] ).before(newField.$el);
+                        element.remove();
+                    }
+                } else if(direction === 'Down'){
+                    if(index!==this.$el.find('.newEl').length-1){
+                        $( this.$el.find('.newEl')[index+1] ).after(newField.$el);
+                        element.remove();
+                    }
+                }
+            },
+            makeNewField: function(fieldType, fieldSize, optionsNames, fieldName){
+                var $body = this.options.$body;
+                var that = this;
+
+                var newField = new addedFieldView({
+                    fieldType: fieldType,
+                    fieldSize: fieldSize||'col-md-6',
+                    optionsNames: optionsNames,
+                    fieldName: fieldName
+                });
+
+                //console.log('!!!CALLBACK fieldType:'+fieldType, ' fieldSize:'+fieldSize, ' optionsNames:'+optionsNames, ' fieldName:'+fieldName);
+                newField.render();
+                newField.$el.find('.newFieldName').html(fieldName);
+                newField.on('removed',function(){
+                    that.isFormEmpty();
+                });
+                newField.on('moved',function(field){
+                    that.moveField(field);
+                });
+                return newField
             }
+            /*,
+            newElClicked: function(e){
+                console.log($(e.currentTarget));
+                $( "div" ).index( this );
+                if($(e.target).hasClass('moveField')){
+                    console.log($(e.target).data());
+                } else if($(e.target).hasClass('moveFieldIcon')){
+                    console.log($(e.target).parent().data().action);
+                }
+            }*/
         });
 
         return selectComponentForm;

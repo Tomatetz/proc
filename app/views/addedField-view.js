@@ -2,7 +2,11 @@ define(['views/editFieldButtons-view'],
     function (editFieldButtonsView) {
 
         addedField = Backbone.Marionette.ItemView.extend({
+            className : 'newEl',
             events: {
+                'click [ data-action="moveFieldUp"]': 'moveFieldUp',
+                'click [ data-action="moveFieldDown"]': 'moveFieldDown',
+                'click [ data-action="editField"]': 'editField',
                 'click [ data-action="removeField"]': 'removeField'
             },
             initialize: function () {
@@ -21,11 +25,7 @@ define(['views/editFieldButtons-view'],
                 editField.render();
 
                 this.$el.find('.edit-buttons-wrapper').append(editField.$el);
-                $('[data-toggle="tooltip"]').tooltip();
-
-
-                console.log(editField.$el.find('[data-toggle="tooltip"]').length);
-
+                //$('[data-toggle="tooltip"]').tooltip();
 
                 this.$el.find('.newElementWrapper').addClass(fieldSize)
                     .attr('fieldSize', fieldSize)
@@ -51,7 +51,14 @@ define(['views/editFieldButtons-view'],
                 }
 
             },
-            removeField:function(e){
+            moveFieldUp: function(e){
+                this.trigger("moved", [this.$el, 'Up']);
+            },
+            moveFieldDown: function(e){
+                console.log(this.$el);
+                this.trigger("moved", [this.$el, 'Down']);
+            },
+            removeField: function(e){
                 var fieldType = this.options.fieldType;
                 this.$el.remove();
                 if(fieldType==='radio' || fieldType==='select'){

@@ -4,13 +4,20 @@
    "id":1,
    "name":"First",
    "creation_date":"03/11/2014",
-   "form":[{"fieldType":"textfield","fieldName":"asd","fieldSize":"col-md-12","fieldOptions":null},{"fieldType":"select","fieldName":"qqw","fieldSize":"col-md-12","fieldOptions":["","a","sad"]}]
+   "form":[
+     {"fieldType":"textfield","fieldName":"asd","fieldSize":"col-md-12","fieldOptions":null},
+     {"fieldType":"select","fieldName":"qqw","fieldSize":"col-md-12","fieldOptions":["","a","sad"]}
+   ]
    },
    {
      "id":2,
      "name":"Second",
      "creation_date":"23/10/2014",
-     "form":[{"fieldType":"textfield","fieldName":"TEXTFIELD","fieldSize":"col-md-12","fieldOptions":null},{"fieldType":"date","fieldName":"CALENDAR","fieldSize":"col-md-6","fieldOptions":null},{"fieldType":"checkbox","fieldName":"CHECKBOX","fieldSize":"col-md-6","fieldOptions":null}]
+     "form":[
+       {"fieldType":"textfield","fieldName":"TEXTFIELD","fieldSize":"col-md-12","fieldOptions":null},
+       {"fieldType":"date","fieldName":"CALENDAR","fieldSize":"col-md-6","fieldOptions":null},
+       {"fieldType":"checkbox","fieldName":"CHECKBOX","fieldSize":"col-md-6","fieldOptions":null}
+     ]
    },
    {
      "id":3,

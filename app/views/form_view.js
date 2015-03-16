@@ -66,7 +66,6 @@ define(['views/selectComponent-view'],
                 } else {
                     var buttonText = e.target.innerHTML;
                     $header.find('#myModalLabel').html(buttonText);
-                    //$header.css('backgroundColor',color);
                 }
 
                 $body.find('.menuButtons').toggleClass('hide');
@@ -101,8 +100,6 @@ define(['views/selectComponent-view'],
                 var forms = this.model.get('forms');
                 _.each(forms, function(form){
                     $body.find('.formsCollecion').append('<option>'+form.name+'</option>');
-
-                    console.log(form);
                 });
 
             }

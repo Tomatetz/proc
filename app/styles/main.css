@@ -8357,6 +8357,7 @@ button.close {
   padding-top: 4px;
   padding-bottom: 4px;
   border-radius: 4px;
+  min-height: 82px;
 }
 .newElementWrapper:hover {
   background-color: #E0F2F5;
