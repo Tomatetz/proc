@@ -1,7 +1,7 @@
 define(['views/selectComponent-view'],
     function (selectComponentView) {
 
-        Form = Backbone.Marionette.ItemView.extend({
+        var Form = Backbone.Marionette.ItemView.extend({
             events: {
                 'click [data-action="ChooseForm"]': 'ChooseForm',
                 'click [data-action="EditForm"]': 'EditForm',
@@ -21,7 +21,36 @@ define(['views/selectComponent-view'],
                 //console.log(this);
             },
             saveForm: function(){
+                var that=this;
+                var parseForm = [];
+                this.$el.find('.newElementWrapper').each(function(){
+                    var fieldType= $( this ).attr('fieldType');
+                    var $element = $( this );
+                    function getOptions(){
+                        if(fieldType === 'radio' || fieldType === 'select'){
+                            var options = [];
 
+                            $element.find('.newSelect option').each(function(){
+                                options.push($( this ).val())
+                            });
+                            $element.find('[name="newRadioField"]').each(function(){
+                                options.push($( this ).attr('value'));
+                            });
+                            return options;
+                        }
+                    };
+
+                    parseForm.push({
+                        fieldType: fieldType,
+                        fieldName: fieldType =='checkbox' ?
+                            that.$el.find('[name="newCheckboxField"]').attr('value') : $element.find('.newFieldName').html(),
+                        fieldSize : $( this).attr('fieldSize'),
+                        fieldOptions: getOptions() || null
+                    });
+                });
+                console.log(JSON.stringify(parseForm));
+
+                this.model.save(parseForm);
             },
             buttonClicked: function(color, e){
                 var $header = this.$el.find('.menu-header'),

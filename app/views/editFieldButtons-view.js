@@ -8,7 +8,7 @@ define([],
             initialize: function () {
             },
             onRender: function () {
-                //$('[data-toggle="tooltip"]').tooltip();
+                this.$el.find('[data-toggle="tooltip"]').tooltip();
             }
         });
 

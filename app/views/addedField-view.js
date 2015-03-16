@@ -11,9 +11,10 @@ define(['views/editFieldButtons-view'],
             },
             onRender: function () {
                 var that = this;
-                var fieldType = this.options.fieldType;
-                var options = this.options.optionsNames;
-                var fieldName = this.options.fieldName;
+                var fieldType = this.options.fieldType,
+                    options = this.options.optionsNames,
+                    fieldName = this.options.fieldName,
+                    fieldSize = this.options.fieldSize;
 
                 var editField = new editFieldButtonsView({
                 });
@@ -21,10 +22,16 @@ define(['views/editFieldButtons-view'],
 
                 this.$el.find('.edit-buttons-wrapper').append(editField.$el);
                 $('[data-toggle="tooltip"]').tooltip();
+
+
                 console.log(editField.$el.find('[data-toggle="tooltip"]').length);
 
 
-                this.$el.find('.newElementWrapper').addClass(this.options.fieldSize);
+                this.$el.find('.newElementWrapper').addClass(fieldSize)
+                    .attr('fieldSize', fieldSize)
+                    .attr('fieldType', fieldType);
+
+
                 if(fieldType==='date'){
                     this.$el.find('input').datepicker({
                         format: "dd/mm/yyyy",
@@ -47,7 +54,7 @@ define(['views/editFieldButtons-view'],
             removeField:function(e){
                 var fieldType = this.options.fieldType;
                 this.$el.remove();
-                if(fieldType==='radio'||fieldType==='select'){
+                if(fieldType==='radio' || fieldType==='select'){
                     $(e.target).parent().parent().parent().parent().parent().parent().remove();
                 }
                 this.trigger("removed");
