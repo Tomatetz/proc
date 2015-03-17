@@ -25,7 +25,6 @@ define(['views/editFieldButtons-view'],
                 editField.render();
 
                 this.$el.find('.edit-buttons-wrapper').append(editField.$el);
-                //$('[data-toggle="tooltip"]').tooltip();
 
                 this.$el.find('.newElementWrapper').addClass(fieldSize)
                     .attr('fieldSize', fieldSize)
@@ -40,11 +39,11 @@ define(['views/editFieldButtons-view'],
                     });
                 } else if(fieldType==='select'){
                     _.each(options, function(option){
-                        that.$el.find('.newSelect').append('<option>'+option+'</option>')
+                        that.$el.find('.newSelect').append('<option class="addedOption">'+option+'</option>')
                     });
                 } else if(fieldType==='radio'){
                     _.each(options, function(option){
-                        that.$el.find('.radio-group').append('<div class="radio"><label><input type="radio" name="newRadioField" value="'+option+'">'+option+'</label></div>');
+                        that.$el.find('.radio-group').append('<div class="radio addedOption"><label><input type="radio" name="newRadioField" value="'+option+'">'+option+'</label></div>');
                     });
                 } else if(fieldType==='checkbox'){
                     that.$el.find('.checkbox').append('<label><input type="checkbox" name="newCheckboxField" value="'+fieldName+'">'+fieldName+'</label>');
@@ -55,8 +54,10 @@ define(['views/editFieldButtons-view'],
                 this.trigger("moved", [this.$el, 'Up']);
             },
             moveFieldDown: function(e){
-                console.log(this.$el);
                 this.trigger("moved", [this.$el, 'Down']);
+            },
+            editField: function(e){
+                this.trigger("edit", this.$el);
             },
             removeField: function(e){
                 var fieldType = this.options.fieldType;

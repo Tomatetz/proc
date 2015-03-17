@@ -10,9 +10,9 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 'click [data-action="addCheckbox"]': 'addCheckbox',
                 'click [data-action="addRadio"]': 'addRadio',
                 'click [data-action="addNewField"]': 'addNewField',
-                'click [data-action="cancelNewField"]': 'cancelNewField',/*
-                'click [ data-action="moveFieldUp"]': 'moveFieldUp',*/
-                'click .newEl': 'newElClicked'
+                'click [data-action="cancelNewField"]': 'cancelNewField',
+                'click .newEl': 'newElClicked'/*,
+                'click .saveEditedField': 'saveEditedField'*/
             },
             template: "app/templates/select-component.hbs",
             initialize: function () {
@@ -34,6 +34,9 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                     $( this ).addClass('disabled');
                 });
                 var header = '';
+
+                this.$el.find('[data-action="saveEditedField"]').html('Добавить')
+                    .attr('data-action', 'addNewField');
                 switch (this.type) {
                     case 'textfield': header ='Добавить текстовое поле';
                         break;
@@ -69,53 +72,62 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
             addTextfield: function(e){
                 var $body = this.options.$body;
                 this.type='textfield';
-                $body.find('.example-inner').append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
+                $body.find('.example-inner').html('')
+                    .append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
                 this.turnOnSizeRadio(true);
                 this.addFieldSelected(e);
             },
             addDate: function(e){
                 var $body = this.options.$body;
                 this.type='date';
-                $body.find('.example-inner').append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
+                $body.find('.example-inner').html('')
+                    .append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
                 this.turnOnSizeRadio(true);
                 this.addFieldSelected(e);
 
             },
-            addSelect: function(e){
+            addSelect: function(e, optionsNames){
                 var $body = this.options.$body;
                 this.type='select';
+                var existedOptions = optionsNames||null;
+
                 var addExtendedField = new addFieldExtendedView({
                     fieldType:this.type,
-                    $body: $body
+                    $body: $body,
+                    existedOptions: existedOptions
                 });
-                $body.find('.example-inner').append(addExtendedField.render().$el);
+                $body.find('.example-inner').html('')
+                    .append(addExtendedField.render().$el);
                 this.turnOnSizeRadio(true);
                 this.addFieldSelected(e);
             },
             addCheckbox: function(e){
                 var $body = this.options.$body;
                 this.type='checkbox';
-                $body.find('.example-inner').append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
+                $body.find('.example-inner').html('')
+                    .append('<label for=""> Название поля </label><input type="text" class="form-control textFieldName" placeholder="Введите название поля">');
                 this.turnOnSizeRadio(false);
                 this.addFieldSelected(e);
             },
-            addRadio: function(e){
+            addRadio: function(e, optionsNames){
                 var $body = this.options.$body;
                 this.type='radio';
+                var existedOptions = optionsNames||null;
                 var addExtendedField = new addFieldExtendedView({
                     fieldType:this.type,
-                    $body: $body
+                    $body: $body,
+                    existedOptions: existedOptions
                 });
-                $body.find('.example-inner').append(addExtendedField.render().$el);
-
+                $body.find('.example-inner').html('')
+                    .append(addExtendedField.render().$el);
                 this.addFieldSelected(e);
                 this.turnOnSizeRadio(false);
             },
             addNewField: function(){
                 var $body = this.options.$body,
                     fieldType = this.type,
-                    fieldName = this.$el.find('.textFieldName').val(),
-                    fieldSize = fieldName.length<18 ? this.$el.find('.sizeRadioButtons input:radio:checked').val() : 'col-md-12',
+                    fieldName = this.$el.find('.textFieldName').val()||'';
+                    var fieldSize = fieldName.length<18 ? this.$el.find('.sizeRadioButtons input:radio:checked').val() : 'col-md-12',
                     optionsNames = [],
                     that=this;
 
@@ -153,7 +165,8 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 $footer.find('button').each(function(){
                     $( this ).removeClass('disabled');
                 });
-                $body.find('.example-inner').empty();
+
+                $body.find('.example-inner').html('');
                 this.isFormEmpty();
             },
             isFormEmpty: function(){
@@ -179,9 +192,23 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                         element.find('[name="newCheckboxField"]').attr('value') : element.find('.newFieldName').html(),
                     fieldSize = element.find('.newElementWrapper').attr('fieldsize'),
                     optionsNames = [];
-                var newField = this.makeNewField(fieldType, fieldSize, null, fieldName);
 
-                //console.log(fieldType, fieldSize, null, fieldName);
+                if(fieldType === 'select'){
+                    element.find('.newSelect option').each(function(){
+                        if($( this ).html()!==''){
+                            optionsNames.push($( this ).html());
+                        }
+                    })
+                } else if(fieldType === 'radio'){
+                    element.find('[name="newRadioField"]').each(function(){
+                        optionsNames.push($( this ).attr('value'));
+                    })
+                }
+
+                var options = optionsNames.length==0 ? null:optionsNames;
+
+                var newField = this.makeNewField(fieldType, fieldSize, options, fieldName);
+
                 if(direction === 'Up'){
                     if(index!==0){
                         $( this.$el.find('.newEl')[index-1] ).before(newField.$el);
@@ -205,7 +232,6 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                     fieldName: fieldName
                 });
 
-                //console.log('!!!CALLBACK fieldType:'+fieldType, ' fieldSize:'+fieldSize, ' optionsNames:'+optionsNames, ' fieldName:'+fieldName);
                 newField.render();
                 newField.$el.find('.newFieldName').html(fieldName);
                 newField.on('removed',function(){
@@ -214,18 +240,106 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 newField.on('moved',function(field){
                     that.moveField(field);
                 });
+                newField.on('edit',function(field){
+                    that.editField(field, fieldType);
+                });
                 return newField
-            }
-            /*,
-            newElClicked: function(e){
-                console.log($(e.currentTarget));
-                $( "div" ).index( this );
-                if($(e.target).hasClass('moveField')){
-                    console.log($(e.target).data());
-                } else if($(e.target).hasClass('moveFieldIcon')){
-                    console.log($(e.target).parent().data().action);
+            },
+            editField: function(field, fieldType){
+                var that = this;
+                var optionsNames = [];
+                field.addClass('editing');
+                if(fieldType == 'textfield'){
+                    var button = this.$el.find('[data-action="addTextfield"]');
+                    this.addTextfield(button);
+                } else if(fieldType == 'date'){
+                    var button = this.$el.find('[data-action="addDatefield"]');
+                    this.addDate(button);
+                } else if(fieldType == 'checkbox'){
+                    var button = this.$el.find('[data-action="addCheckbox"]');
+                    this.addCheckbox(button);
+                } else if(fieldType == 'select'){
+                    var button = this.$el.find('[data-action="addSelect"]');
+                    console.log(that.$el.find('.editing .newSelect option'));
+                    that.$el.find('.editing .newSelect option').each(function(){
+                        if($( this ).html()!==''){
+                            optionsNames.push($( this ).html());
+                        }
+                    });
+                    this.addSelect(button, optionsNames);
+                } else if(fieldType === 'radio'){
+                    that.$el.find.find('.editing [name="newRadioField"]').each(function(){
+                        optionsNames.push($( this ).attr('value'));
+                    })
                 }
-            }*/
+
+
+                var fieldName = fieldType =='checkbox' ?
+                    field.find('[name="newCheckboxField"]').attr('value') : field.find('.newFieldName').html();
+
+                this.$el.find('.textFieldName').val(fieldName);
+
+                this.$el.find('[data-action="addNewField"]').html('Сохранить изменения')
+                    .attr('data-action', 'saveEditedField').on('click', function(){
+                        var newName = that.$el.find('.textFieldName').val();
+                        that.saveEditedField(field, fieldType, newName)
+                });
+
+            },
+            saveEditedField: function(field, fieldType, fieldName){
+                var that = this;
+                var fieldSize = fieldName.length<18 ? this.$el.find('.sizeRadioButtons input:radio:checked').val() : 'col-md-12',
+                    optionsNames = [];
+                console.log(fieldName);
+                this.$el.find('.editing .newFieldName').html(fieldName);
+                if(fieldType === 'checkbox'){
+                    this.$el.find('.editing .checkbox label').html('<input type="checkbox" name="newCheckboxField" value="'+fieldName+'">'+fieldName);
+                }
+
+                if(fieldType === 'checkbox'||fieldType === 'radio'){
+                    fieldSize = fieldName.length<18 ? 'col-md-6' : 'col-md-12';
+                }
+
+                var fieldsizeOld = this.$el.find('.editing .newElementWrapper').attr('fieldsize');
+                this.$el.find('.editing .newElementWrapper')
+                    .removeClass(fieldsizeOld).addClass(fieldSize).attr('fieldsize', fieldSize);
+
+
+                this.$el.find('.list-group-item').each(function(){
+                    optionsNames.push($( this ).attr('value'));
+                });
+                that.$el.find('.editing .addedOption').remove();
+                if(fieldType==='select'){
+                    _.each(optionsNames, function(option){
+                        that.$el.find('.editing .newSelect').append('<option class="addedOption">'+option+'</option>')
+                    });
+                } else if(fieldType==='radio') {
+                    _.each(optionsNames, function (option) {
+                        that.$el.find('.editing .radio-group').append('<div class="radio addedOption"><label><input type="radio" name="newRadioField" value="' + option + '">' + option + '</label></div>');
+                    });
+                }
+                this.$el.find('.editing').removeClass('editing');
+                var isExtended = ((fieldType=='radio'||fieldType=='select')&&optionsNames.length<2)?true:false;
+
+                if(fieldName!==''&&!isExtended){
+
+                    var $body = this.options.$body,
+                        $footer = this.options.$footer;
+
+                    $body.find('.new-panel-example .panel-body .well').addClass('hide');
+                    $body.find('.add-fields-button-group button').each(function() {
+                        $( this ).removeClass( "disabled" ).removeClass('btn-warning');
+                    });
+                    $body.find('.newElementWrapper ').each(function() {
+                        $( this ).removeClass( "shaded" );
+                    });
+
+                    $footer.find('button').each(function(){
+                        $( this ).removeClass('disabled');
+                    });
+                }
+
+            }
         });
 
         return selectComponentForm;
