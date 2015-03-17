@@ -248,6 +248,8 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
             editField: function(field, fieldType){
                 var that = this;
                 var optionsNames = [];
+                var fieldType = field.find('.newElementWrapper').attr('fieldtype');
+
                 field.addClass('editing');
                 if(fieldType == 'textfield'){
                     var button = this.$el.find('[data-action="addTextfield"]');
@@ -260,7 +262,6 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                     this.addCheckbox(button);
                 } else if(fieldType == 'select'){
                     var button = this.$el.find('[data-action="addSelect"]');
-                    console.log(that.$el.find('.editing .newSelect option'));
                     that.$el.find('.editing .newSelect option').each(function(){
                         if($( this ).html()!==''){
                             optionsNames.push($( this ).html());
@@ -288,9 +289,9 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
             },
             saveEditedField: function(field, fieldType, fieldName){
                 var that = this;
+                var fieldType = this.$el.find('.editing .newElementWrapper').attr('fieldtype')
                 var fieldSize = fieldName.length<18 ? this.$el.find('.sizeRadioButtons input:radio:checked').val() : 'col-md-12',
                     optionsNames = [];
-                console.log(fieldName);
                 this.$el.find('.editing .newFieldName').html(fieldName);
                 if(fieldType === 'checkbox'){
                     this.$el.find('.editing .checkbox label').html('<input type="checkbox" name="newCheckboxField" value="'+fieldName+'">'+fieldName);
@@ -303,7 +304,6 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 var fieldsizeOld = this.$el.find('.editing .newElementWrapper').attr('fieldsize');
                 this.$el.find('.editing .newElementWrapper')
                     .removeClass(fieldsizeOld).addClass(fieldSize).attr('fieldsize', fieldSize);
-
 
                 this.$el.find('.list-group-item').each(function(){
                     optionsNames.push($( this ).attr('value'));
@@ -318,7 +318,7 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                         that.$el.find('.editing .radio-group').append('<div class="radio addedOption"><label><input type="radio" name="newRadioField" value="' + option + '">' + option + '</label></div>');
                     });
                 }
-                this.$el.find('.editing').removeClass('editing');
+                //console.log(fieldSize, fieldName, fieldType);
                 var isExtended = ((fieldType=='radio'||fieldType=='select')&&optionsNames.length<2)?true:false;
 
                 if(fieldName!==''&&!isExtended){
@@ -338,6 +338,9 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                         $( this ).removeClass('disabled');
                     });
                 }
+
+
+                this.$el.find('.editing').removeClass('editing');
 
             }
         });
