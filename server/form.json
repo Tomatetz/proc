@@ -6,7 +6,7 @@
    "creation_date":"03/11/2014",
    "form":[
      {"fieldType":"textfield","fieldName":"asd","fieldSize":"col-md-12","fieldOptions":null},
-     {"fieldType":"select","fieldName":"qqw","fieldSize":"col-md-12","fieldOptions":["","a","sad"]}
+     {"fieldType":"select","fieldName":"qqw","fieldSize":"col-md-12","fieldOptions":["a","sad"]}
    ]
    },
    {
@@ -22,12 +22,17 @@
    {
      "id":3,
      "name":"Third",
-     "creation_date":"14/02/2014"
+     "creation_date":"14/02/2014",
+     "form":[
+       {"fieldType":"radio","fieldName":"ads","fieldSize":"col-md-6","fieldOptions":["1","2","3"]},{"fieldType":"date","fieldName":"aaa","fieldSize":"col-md-6","fieldOptions":null}
+     ]
    },
    {
      "id":45,
      "name":"4545454",
-     "creation_date":"14/02/2014"
+     "creation_date":"14/02/2014",
+     "form":[
+     ]
    }
  ]
 }

@@ -62,9 +62,9 @@ define(['views/editFieldButtons-view'],
             removeField: function(e){
                 var fieldType = this.options.fieldType;
                 this.$el.remove();
-                if(fieldType==='radio' || fieldType==='select'){
+                /*if(fieldType==='radio' || fieldType==='select'){
                     $(e.target).parent().parent().parent().parent().parent().parent().remove();
-                }
+                }*/
                 this.trigger("removed");
             }
         });

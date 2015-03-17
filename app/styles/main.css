@@ -8384,3 +8384,9 @@ button.close {
   font-weight: normal;
   font-size: 16px;
 }
+.editing .newElementWrapper {
+  border: 2px dashed #E20011;
+}
+.formsCollecion {
+  margin-bottom: 14px;
+}

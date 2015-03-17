@@ -31,7 +31,9 @@ define(['views/selectComponent-view'],
                             var options = [];
 
                             $element.find('.newSelect option').each(function(){
-                                options.push($( this ).val())
+                                if($( this ).val()!==""){
+                                    options.push($( this ).val());
+                                }
                             });
                             $element.find('[name="newRadioField"]').each(function(){
                                 options.push($( this ).attr('value'));
@@ -85,6 +87,7 @@ define(['views/selectComponent-view'],
                 var $body = this.$el.find('.menu-body'),
                     $footer = this.$el.find('.menu-footer');
                 var buttonColor = '#C8E1E8';
+
                 this.buttonClicked(buttonColor,e);
 
                 var selectComponent = new selectComponentView({
@@ -95,13 +98,35 @@ define(['views/selectComponent-view'],
                 $body.append(selectComponent.$el)
             },
             addSelectForm: function(){
+                var that = this;
                 var $body = this.$el.find('.menu-body');
-                $body.append('<select class="form-control formsCollecion"></select>');
+
+                $body.append('<select class="form-control formsCollecion"><option></option></select>');
                 var forms = this.model.get('forms');
                 _.each(forms, function(form){
                     $body.find('.formsCollecion').append('<option>'+form.name+'</option>');
                 });
 
+                $body.find('.formsCollecion').change(function (){
+                    $body.find('.select-component').remove();
+                    var name = $body.find('select option:selected').html();
+                    _.each(forms, function(form){
+                        if(form.name == name){
+
+                            var $body = that.$el.find('.menu-body'),
+                                $footer = that.$el.find('.menu-footer'),
+                                form = form || null;
+
+                            var selectComponent = new selectComponentView({
+                                $body:$body,
+                                $footer:$footer,
+                                form: form
+                            });
+                            selectComponent.render();
+                            $body.append(selectComponent.$el)
+                        }
+                    });
+                });
             }
         });
 

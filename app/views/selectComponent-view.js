@@ -20,12 +20,24 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 this.isFormEmpty();
             },
             onRender: function () {
+                var that = this;
                 this.$el.find('.form-control').datepicker({
                     todayBtn: "linked",
                     orientation: "top auto"
                 });
                 this.$el.find('[data-toggle="tooltip"]').tooltip();
-                //console.log(this);
+                if(this.options.form){
+                    _.each(this.options.form.form, function(form){
+                        var fieldType = form.fieldType,
+                            fieldSize = form.fieldSize,
+                            fieldName = form.fieldName,
+                            optionsNames = form.fieldOptions;
+
+                        var newField = that.makeNewField(fieldType, fieldSize, optionsNames, fieldName);
+                        
+                        that.$el.find('.well').parent().append(newField.$el);
+                    });
+                }
             },
             addFieldSelected: function(e){
                 var $body = this.options.$body,
@@ -37,6 +49,7 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
 
                 this.$el.find('[data-action="saveEditedField"]').html('Добавить')
                     .attr('data-action', 'addNewField');
+
                 switch (this.type) {
                     case 'textfield': header ='Добавить текстовое поле';
                         break;
@@ -167,6 +180,7 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 });
 
                 $body.find('.example-inner').html('');
+                this.$el.find('.editing').removeClass('editing');
                 this.isFormEmpty();
             },
             isFormEmpty: function(){
@@ -252,15 +266,22 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
 
                 field.addClass('editing');
                 if(fieldType == 'textfield'){
+
                     var button = this.$el.find('[data-action="addTextfield"]');
                     this.addTextfield(button);
+
                 } else if(fieldType == 'date'){
+
                     var button = this.$el.find('[data-action="addDatefield"]');
                     this.addDate(button);
+
                 } else if(fieldType == 'checkbox'){
+
                     var button = this.$el.find('[data-action="addCheckbox"]');
                     this.addCheckbox(button);
+
                 } else if(fieldType == 'select'){
+
                     var button = this.$el.find('[data-action="addSelect"]');
                     that.$el.find('.editing .newSelect option').each(function(){
                         if($( this ).html()!==''){
@@ -268,10 +289,14 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                         }
                     });
                     this.addSelect(button, optionsNames);
-                } else if(fieldType === 'radio'){
-                    that.$el.find.find('.editing [name="newRadioField"]').each(function(){
+
+                } else if(fieldType == 'radio'){
+
+                    var button = this.$el.find('[data-action="addRadio"]');
+                    that.$el.find('.editing [name="newRadioField"]').each(function(){
                         optionsNames.push($( this ).attr('value'));
-                    })
+                    });
+                    this.addRadio(button, optionsNames);
                 }
 
 
@@ -318,7 +343,6 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                         that.$el.find('.editing .radio-group').append('<div class="radio addedOption"><label><input type="radio" name="newRadioField" value="' + option + '">' + option + '</label></div>');
                     });
                 }
-                //console.log(fieldSize, fieldName, fieldType);
                 var isExtended = ((fieldType=='radio'||fieldType=='select')&&optionsNames.length<2)?true:false;
 
                 if(fieldName!==''&&!isExtended){
