@@ -6,6 +6,7 @@ define(['views/selectComponent-view'],
                 'click [data-action="ChooseForm"]': 'ChooseForm',
                 //'click [data-action="EditForm"]': 'EditForm',
                 'click [data-action="CreateForm"]': 'CreateForm',
+                'click [data-action="UseForm"]': 'UseForm',
                 'click [data-action="Back"]': 'buttonClicked',
                 'click [data-action="Save"]': 'saveForm'
             },
@@ -84,12 +85,17 @@ define(['views/selectComponent-view'],
                 this.buttonClicked(buttonColor,e);
             },*/
             CreateForm: function (e) {
+                var that = this;
                 var $body = this.$el.find('.menu-body'),
                     $footer = this.$el.find('.menu-footer');
                 var buttonColor = '#C8E1E8';
 
                 this.buttonClicked(buttonColor,e);
-
+                this.$el.find('[data-action="Save"]').show();
+                /*this.$el.find('.loadedFormActions').hide();
+                $body.find('.add-fields-button-group button').show();
+                $body.find('.new-panel-example .panel-heading').show();*/
+                that.toggleShowingUseFormButtons('show', $body, that);
                 var selectComponent = new selectComponentView({
                     $body:$body,
                     $footer:$footer
@@ -100,6 +106,7 @@ define(['views/selectComponent-view'],
             addSelectForm: function(){
                 var that = this;
                 var $body = this.$el.find('.menu-body');
+                this.$el.find('[data-action="Save"]').hide();
 
                 $body.append('<select class="form-control formsCollecion"><option></option></select>');
                 var forms = this.model.get('forms');
@@ -128,8 +135,43 @@ define(['views/selectComponent-view'],
                             $body.append(selectComponent.$el)
                         }
                     });
+                    that.toggleShowingUseFormButtons('hide', $body, that, name);
+                    /*
+                    $body.find('.newElementWrapper ').each(function() {
+                        $( this ).addClass( "shaded" );
+                    });
+                    $body.find('.add-fields-button-group button').hide();
+                    $body.find('.new-panel-example .panel-heading').hide();
+                    if(name!==''){
+                        that.$el.find('.loadedFormActions').show();
+                    } else {
+                        that.$el.find('.loadedFormActions').hide();
+                    }*/
                 });
+            },
+            UseForm: function(){
+
+            },
+            toggleShowingUseFormButtons: function(val, $body, that, name){
+                if(val == 'hide'){
+                    $body.find('.newElementWrapper ').each(function() {
+                        $( this ).addClass( "shaded" );
+                    });
+                    $body.find('.add-fields-button-group button').hide();
+                    $body.find('.new-panel-example .panel-heading').hide();
+                    if(name!==''){
+                        that.$el.find('.loadedFormActions').show();
+                    } else {
+                        that.$el.find('.loadedFormActions').hide();
+                    }
+                } else if(val == 'show'){
+                    this.$el.find('.loadedFormActions').hide();
+                    $body.find('.add-fields-button-group button').show();
+                    $body.find('.new-panel-example .panel-heading').show();
+                }
+
             }
+
         });
 
         return Form;
