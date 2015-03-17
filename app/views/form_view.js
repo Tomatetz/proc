@@ -4,7 +4,7 @@ define(['views/selectComponent-view'],
         var Form = Backbone.Marionette.ItemView.extend({
             events: {
                 'click [data-action="ChooseForm"]': 'ChooseForm',
-                'click [data-action="EditForm"]': 'EditForm',
+                //'click [data-action="EditForm"]': 'EditForm',
                 'click [data-action="CreateForm"]': 'CreateForm',
                 'click [data-action="Back"]': 'buttonClicked',
                 'click [data-action="Save"]': 'saveForm'
@@ -78,11 +78,11 @@ define(['views/selectComponent-view'],
                 var buttonColor = '#B3E2B3';
                 this.buttonClicked(buttonColor,e);
                 this.addSelectForm();
-            },
+            },/*
             EditForm: function (e) {
                 var buttonColor = '#E4D2BA';
                 this.buttonClicked(buttonColor,e);
-            },
+            },*/
             CreateForm: function (e) {
                 var $body = this.$el.find('.menu-body'),
                     $footer = this.$el.find('.menu-footer');
@@ -123,6 +123,8 @@ define(['views/selectComponent-view'],
                                 form: form
                             });
                             selectComponent.render();
+                            selectComponent.$el.find('.edit-buttons-wrapper').hide();
+
                             $body.append(selectComponent.$el)
                         }
                     });

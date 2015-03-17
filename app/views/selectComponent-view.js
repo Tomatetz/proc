@@ -34,7 +34,7 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                             optionsNames = form.fieldOptions;
 
                         var newField = that.makeNewField(fieldType, fieldSize, optionsNames, fieldName);
-                        
+
                         that.$el.find('.well').parent().append(newField.$el);
                     });
                 }

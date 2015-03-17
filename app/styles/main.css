@@ -8334,9 +8334,6 @@ button.close {
   margin-left: -5px;
   margin-right: -5px;
 }
-.centered {
-  margin-left: 45px;
-}
 .new-panel-example {
   margin-top: 14px;
 }
@@ -8389,4 +8386,7 @@ button.close {
 }
 .formsCollecion {
   margin-bottom: 14px;
+}
+.formMenu {
+  width: 284px;
 }
