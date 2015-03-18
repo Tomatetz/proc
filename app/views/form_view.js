@@ -9,7 +9,8 @@ define(['views/selectComponent-view'],
                 'click [data-action="EditLoadedForm"]': 'EditLoadedForm',
                 'click [data-action="CancelEditForm"]': 'CancelEditForm',
                 'click [data-action="Back"]': 'buttonClicked',
-                'click [data-action="Save"]': 'saveForm'
+                'click [data-action="Save"]': 'saveForm',
+                'click [data-action="SaveEditedForm"]': 'SaveEditedForm'
             },
             template: "app/templates/form.hbs",
             initialize: function () {
@@ -22,9 +23,13 @@ define(['views/selectComponent-view'],
                 });
                 //console.log(this);
             },
-            saveForm: function(){
+            saveForm: function(edited){
                 var that=this;
-                var name = that.$el.find('.new-form-name__input').val();
+                if(edited){
+                    var name = that.$el.find('.edit-form-name input').val();
+                } else {
+                    var name = that.$el.find('.new-form-name__input').val();
+                }
                 var parseForm = {
                     name: name,
                     form: []
@@ -138,6 +143,8 @@ define(['views/selectComponent-view'],
                 $body.find('.formsCollecion').change(function (){
                     $body.find('.select-component').remove();
                     var name = $body.find('select option:selected').html();
+                    that.name = name;
+
                     _.each(forms, function(form){
                         if(form.name == name){
 
@@ -163,7 +170,7 @@ define(['views/selectComponent-view'],
 
             },
             EditLoadedForm: function(a){
-                if(a=='back'){
+                if(a=='cancelEditing'){
 
                     this.$el.find('.newElementWrapper ').each(function() {
                         $( this ).addClass( "shaded" );
@@ -172,6 +179,8 @@ define(['views/selectComponent-view'],
                     this.$el.find('.edit-buttons-wrapper').hide();
                     this.$el.find('.update-form-buttons').hide();
                     this.$el.find('.loadedFormActions').show();
+                    this.$el.find('.formsCollecion').show();
+                    this.$el.find('.edit-form-name').hide();
                 } else {
                     this.$el.find('.newElementWrapper ').each(function() {
                         $( this ).removeClass( "shaded" );
@@ -180,10 +189,15 @@ define(['views/selectComponent-view'],
                     this.$el.find('.edit-buttons-wrapper').fadeIn(400);
                     this.$el.find('.update-form-buttons').show();
                     this.$el.find('.loadedFormActions').hide();
+                    this.$el.find('.formsCollecion').hide();
+                    this.$el.find('.edit-form-name').show();
+
+                    this.$el.find('.edit-form-name input').val(this.name);
+
                 }
             },
             CancelEditForm: function(){
-                this.EditLoadedForm('back');
+                this.EditLoadedForm('cancelEditing');
             },
             toggleShowingUseFormButtons: function(val, $body, that, name){
                 if(val == 'hide'){
@@ -204,6 +218,10 @@ define(['views/selectComponent-view'],
                     $body.find('.new-panel-example .panel-heading').show();
                 }
 
+            },
+            SaveEditedForm: function(){
+                this.saveForm(true);
+              console.log(this);
             }
 
         });

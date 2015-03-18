@@ -8438,3 +8438,9 @@ button.close {
   color: #3977a5;
   font-size: 14px;
 }
+.edit-form-name input {
+  margin-bottom: 30px;
+}
+.edit-form-name {
+  display: none;
+}

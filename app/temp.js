@@ -49,12 +49,24 @@ servr.post('/form/:id', function(req, res){
 
     var z = require('../server/forms.json');
     var temp = z;
-    temp.forms.push({
-        name: req.body.name,
-        form: req.body.form
+
+
+    var isNew = true;
+    temp.forms.each( function(form){
+        if(form.name == req.body.name){
+            form.form = req.body.form
+            isNew = false
+        }
+
+        console.log(form.name, req.body.name);
     });
 
-    console.log(req.body);
+    if(isNew){
+        temp.forms.push({
+            name: req.body.name,
+            form: req.body.form
+        });
+    }
     res.json(req.body);
     fs.writeFile("server/forms.json", JSON.stringify(temp), function(err) {
         if(err) {
