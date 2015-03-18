@@ -8350,6 +8350,9 @@ button.close {
   border-radius: 6px 6px 0px 0px;
   background-color: #C8E1E8;
 }
+#myModal .modal-backdrop {
+  min-height: 2000px;
+}
 .newElementWrapper {
   padding-top: 4px;
   padding-bottom: 4px;
@@ -8395,4 +8398,19 @@ button.close {
 }
 .update-form-buttons {
   display: none;
+}
+.loadedFormActions [data-action="UseForm"] {
+  background-color: #CBE8D3;
+  color: #000;
+}
+.loadedFormActions [data-action="UseForm"]:hover {
+  background-color: #ABECA7;
+}
+.loadedFormActions [data-action="EditLoadedForm"] {
+  background-color: #CBDAE8;
+  border-color: #369AEE;
+  color: #000;
+}
+.loadedFormActions [data-action="EditLoadedForm"]:hover {
+  background-color: #85BBE2;
 }

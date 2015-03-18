@@ -89,9 +89,8 @@ define(['views/selectComponent-view'],
 
                 this.buttonClicked(buttonColor,e);
                 this.$el.find('[data-action="Save"]').show();
-                /*this.$el.find('.loadedFormActions').hide();
-                $body.find('.add-fields-button-group button').show();
-                $body.find('.new-panel-example .panel-heading').show();*/
+                this.$el.find('.update-form-buttons').hide();
+                
                 that.toggleShowingUseFormButtons('show', $body, that);
                 var selectComponent = new selectComponentView({
                     $body:$body,
