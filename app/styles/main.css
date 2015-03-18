@@ -8379,7 +8379,7 @@ button.close {
 }
 .extendedFieldOptions h4 {
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
 }
 .editing .newElementWrapper {
   border: 2px dashed #E20011;
@@ -8391,5 +8391,8 @@ button.close {
   width: 284px;
 }
 .loadedFormActions {
+  display: none;
+}
+.update-form-buttons {
   display: none;
 }

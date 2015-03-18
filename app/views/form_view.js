@@ -4,9 +4,10 @@ define(['views/selectComponent-view'],
         var Form = Backbone.Marionette.ItemView.extend({
             events: {
                 'click [data-action="ChooseForm"]': 'ChooseForm',
-                //'click [data-action="EditForm"]': 'EditForm',
                 'click [data-action="CreateForm"]': 'CreateForm',
                 'click [data-action="UseForm"]': 'UseForm',
+                'click [data-action="EditLoadedForm"]': 'EditLoadedForm',
+                'click [data-action="CancelEditForm"]': 'CancelEditForm',
                 'click [data-action="Back"]': 'buttonClicked',
                 'click [data-action="Save"]': 'saveForm'
             },
@@ -79,11 +80,7 @@ define(['views/selectComponent-view'],
                 var buttonColor = '#B3E2B3';
                 this.buttonClicked(buttonColor,e);
                 this.addSelectForm();
-            },/*
-            EditForm: function (e) {
-                var buttonColor = '#E4D2BA';
-                this.buttonClicked(buttonColor,e);
-            },*/
+            },
             CreateForm: function (e) {
                 var that = this;
                 var $body = this.$el.find('.menu-body'),
@@ -107,6 +104,9 @@ define(['views/selectComponent-view'],
                 var that = this;
                 var $body = this.$el.find('.menu-body');
                 this.$el.find('[data-action="Save"]').hide();
+
+                this.$el.find('.loadedFormActions').hide();
+                this.$el.find('.update-form-buttons').hide();
 
                 $body.append('<select class="form-control formsCollecion"><option></option></select>');
                 var forms = this.model.get('forms');
@@ -136,27 +136,40 @@ define(['views/selectComponent-view'],
                         }
                     });
                     that.toggleShowingUseFormButtons('hide', $body, that, name);
-                    /*
-                    $body.find('.newElementWrapper ').each(function() {
-                        $( this ).addClass( "shaded" );
-                    });
-                    $body.find('.add-fields-button-group button').hide();
-                    $body.find('.new-panel-example .panel-heading').hide();
-                    if(name!==''){
-                        that.$el.find('.loadedFormActions').show();
-                    } else {
-                        that.$el.find('.loadedFormActions').hide();
-                    }*/
                 });
             },
             UseForm: function(){
 
+            },
+            EditLoadedForm: function(a){
+                if(a=='back'){
+
+                    this.$el.find('.newElementWrapper ').each(function() {
+                        $( this ).addClass( "shaded" );
+                    });
+                    this.$el.find('.add-fields-button-group button').hide();
+                    this.$el.find('.edit-buttons-wrapper').hide();
+                    this.$el.find('.update-form-buttons').hide();
+                    this.$el.find('.loadedFormActions').show();
+                } else {
+                    this.$el.find('.newElementWrapper ').each(function() {
+                        $( this ).removeClass( "shaded" );
+                    });
+                    this.$el.find('.add-fields-button-group button').show();
+                    this.$el.find('.edit-buttons-wrapper').show();
+                    this.$el.find('.update-form-buttons').show();
+                    this.$el.find('.loadedFormActions').hide();
+                }
+            },
+            CancelEditForm: function(){
+                this.EditLoadedForm('back');
             },
             toggleShowingUseFormButtons: function(val, $body, that, name){
                 if(val == 'hide'){
                     $body.find('.newElementWrapper ').each(function() {
                         $( this ).addClass( "shaded" );
                     });
+
                     $body.find('.add-fields-button-group button').hide();
                     $body.find('.new-panel-example .panel-heading').hide();
                     if(name!==''){
