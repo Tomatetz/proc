@@ -1,24 +1,37 @@
-{"paper": "124", "count": 3,
+{
   "forms":[
     {
       "id":1,
       "name":"First",
-      "creation_date":"03/11/2014"
+      "creation_date":"03/11/2014",
+      "form":[
+        {"fieldType":"textfield","fieldName":"asd","fieldSize":"col-md-12","fieldOptions":null},
+        {"fieldType":"select","fieldName":"qqw","fieldSize":"col-md-12","fieldOptions":["a","sad"]}
+      ]
     },
     {
       "id":2,
       "name":"Second",
-      "creation_date":"23/10/2014"
+      "creation_date":"23/10/2014",
+      "form":[
+        {"fieldType":"textfield","fieldName":"TEXTFIELD","fieldSize":"col-md-12","fieldOptions":null},
+        {"fieldType":"date","fieldName":"CALENDAR","fieldSize":"col-md-6","fieldOptions":null},
+        {"fieldType":"checkbox","fieldName":"CHECKBOX","fieldSize":"col-md-6","fieldOptions":null}
+      ]
     },
     {
       "id":3,
       "name":"Third",
-      "creation_date":"14/02/2014"
+      "creation_date":"14/02/2014",
+      "form":[
+        {"fieldType":"radio","fieldName":"ads","fieldSize":"col-md-6","fieldOptions":["1","2","3"]},{"fieldType":"date","fieldName":"aaa","fieldSize":"col-md-6","fieldOptions":null}
+      ]
     },
     {
-      "id":4,
-      "name":"4444",
-      "creation_date":"14/02/2014"
+      "id":45,
+      "name":"4545454",
+      "creation_date":"14/02/2014",
+      "form":[{"fieldType":"textfield","fieldName":"hoo","fieldSize":"col-md-12","fieldOptions":null},{"fieldType":"radio","fieldName":"jfj","fieldSize":"col-md-6","fieldOptions":["2","3s"]},{"fieldType":"select","fieldName":"vwevrv","fieldSize":"col-md-6","fieldOptions":["1","2","3","4"]}]
     }
   ]
 }

@@ -12,6 +12,8 @@ var fs = require('fs');servr.disable('etag');
     res.setHeader('Last-Modified', (new Date()).toUTCString());
      res.setHeader('Cache-Control', 'public, max-age=31557600');
 });*/
+var bodyParser = require('body-parser');
+servr.use( bodyParser.json() );       // to support JSON-encoded bodies
 
 servr.use(function (req, res, next) {
 
@@ -39,21 +41,27 @@ servr.get('/user/:id', function(req, res, next){
     res.json(d);
 });
 servr.get('/form/:id', function(req, res){
-    res.json(d);
+    res.json(o);
 });
 
-servr.post('/form/:id', function(req, res, next){
-    next();
+servr.post('/form/:id', function(req, res){
+    //console.log(o.forms);
+
+    var z = require('../server/forms.json');
+    var temp = z;
+    temp.forms.push({
+        name: req.body.name,
+        form: req.body.form
+    });
+
     console.log(req.body);
-    /*fs.writeFile("server/forms.json", req.body, function(err) {
+    res.json(req.body);
+    fs.writeFile("server/forms.json", JSON.stringify(temp), function(err) {
         if(err) {
             return console.log(err);
         }
-
         console.log("The file was saved!");
     });
-*/
-    var email = req.param('email', null);  // second parameter is default
 });
 
 module.exports = servr;

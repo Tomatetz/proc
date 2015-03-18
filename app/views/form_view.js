@@ -24,7 +24,11 @@ define(['views/selectComponent-view'],
             },
             saveForm: function(){
                 var that=this;
-                var parseForm = [];
+                var name = that.$el.find('.new-form-name__input').val();
+                var parseForm = {
+                    name: name,
+                    form: []
+                };
                 this.$el.find('.newElementWrapper').each(function(){
                     var fieldType= $( this ).attr('fieldType');
                     var $element = $( this );
@@ -44,17 +48,27 @@ define(['views/selectComponent-view'],
                         }
                     };
 
-                    parseForm.push({
-                        fieldType: fieldType,
-                        fieldName: fieldType =='checkbox' ?
-                            that.$el.find('[name="newCheckboxField"]').attr('value') : $element.find('.newFieldName').html(),
-                        fieldSize : $( this).attr('fieldSize'),
-                        fieldOptions: getOptions() || null
+
+                    parseForm.form.push({
+                            fieldType: fieldType,
+                            fieldName: fieldType == 'checkbox' ?
+                                that.$el.find('[name="newCheckboxField"]').attr('value') : $element.find('.newFieldName').html(),
+                            fieldSize: $(this).attr('fieldSize'),
+                            fieldOptions: getOptions() || null
                     });
                 });
                 console.log(JSON.stringify(parseForm));
+/*
+                $.when(this.model.save(parseForm), function(){
+                    console.log(123);
+                    that.model.fetch();
+                });*/
+                this.model.save(parseForm, {success : function (model, response) {
+                    console.log("success");
+                    that.model.fetch()
+                }})
 
-                this.model.save(parseForm);
+
             },
             buttonClicked: function(color, e){
                 var $header = this.$el.find('.menu-header'),
@@ -146,7 +160,7 @@ define(['views/selectComponent-view'],
                     this.$el.find('.newElementWrapper ').each(function() {
                         $( this ).addClass( "shaded" );
                     });
-                    this.$el.find('.add-fields-button-group button').hide();
+                    this.$el.find('.add-fields-button-group button').fadeOut(400);
                     this.$el.find('.edit-buttons-wrapper').hide();
                     this.$el.find('.update-form-buttons').hide();
                     this.$el.find('.loadedFormActions').show();
@@ -154,8 +168,8 @@ define(['views/selectComponent-view'],
                     this.$el.find('.newElementWrapper ').each(function() {
                         $( this ).removeClass( "shaded" );
                     });
-                    this.$el.find('.add-fields-button-group button').show();
-                    this.$el.find('.edit-buttons-wrapper').show();
+                    this.$el.find('.add-fields-button-group button').fadeIn(400);
+                    this.$el.find('.edit-buttons-wrapper').fadeIn(400);
                     this.$el.find('.update-form-buttons').show();
                     this.$el.find('.loadedFormActions').hide();
                 }

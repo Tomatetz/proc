@@ -8340,6 +8340,14 @@ button.close {
 .new-panel-example .new-field-buttons {
   margin-bottom: 0px;
 }
+.new-panel-example .panel-heading {
+  height: 55px;
+}
+.new-panel-example .panel-heading .new-form-name__input {
+  min-width: 205px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 .textFieldName {
   margin-bottom: 4px;
 }
@@ -8348,10 +8356,13 @@ button.close {
 }
 #myModal .menu-header {
   border-radius: 6px 6px 0px 0px;
-  background-color: #C8E1E8;
+  background-color: #F4F4F4;
 }
 #myModal .modal-backdrop {
   min-height: 2000px;
+}
+#myModal #myModalLabel {
+  font-size: 16px;
 }
 .newElementWrapper {
   padding-top: 4px;
@@ -8397,20 +8408,33 @@ button.close {
   display: none;
 }
 .update-form-buttons {
+  background-color: #FFF;
+  color: #000;
   display: none;
 }
-.loadedFormActions [data-action="UseForm"] {
-  background-color: #CBE8D3;
+.btn-success[data-action="Save"] {
+  background-color: #FFF;
   color: #000;
 }
-.loadedFormActions [data-action="UseForm"]:hover {
-  background-color: #ABECA7;
+.btn-success[data-action="Save"]:hover {
+  background-color: #449d44;
+  color: #FFF;
 }
-.loadedFormActions [data-action="EditLoadedForm"] {
-  background-color: #CBDAE8;
-  border-color: #369AEE;
+[data-action="Back"],
+.use-form-buttons {
+  background-color: #FFF;
   color: #000;
 }
-.loadedFormActions [data-action="EditLoadedForm"]:hover {
-  background-color: #85BBE2;
+[data-action="ChooseForm"]:hover .fa {
+  -moz-transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  transform: scaleX(1.6);
+  color: #63D75B;
+  font-size: 14px;
+}
+[data-action="CreateForm"]:hover .fa {
+  color: #3977a5;
+  font-size: 14px;
 }

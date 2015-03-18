@@ -11,8 +11,7 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                 'click [data-action="addRadio"]': 'addRadio',
                 'click [data-action="addNewField"]': 'addNewField',
                 'click [data-action="cancelNewField"]': 'cancelNewField',
-                'click .newEl': 'newElClicked'/*,
-                'click .saveEditedField': 'saveEditedField'*/
+                'click .newEl': 'newElClicked'
             },
             template: "app/templates/select-component.hbs",
             initialize: function () {
@@ -21,10 +20,11 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
             },
             onRender: function () {
                 var that = this;
-                this.$el.find('.form-control').datepicker({
+                /*this.$el.find('.form-control').datepicker({
                     todayBtn: "linked",
                     orientation: "top auto"
-                });
+                });*/
+
                 this.$el.find('[data-toggle="tooltip"]').tooltip();
                 if(this.options.form){
                     _.each(this.options.form.form, function(form){
@@ -38,6 +38,13 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                         that.$el.find('.well').parent().append(newField.$el);
                     });
                 }
+
+                //todo name input
+                this.$el.find('.new-form-name__input').on('input', function() {
+                    $(this).val();
+                });
+                //console.log(this.$el.find('.new-form-name__input'));
+                this.$el.find('.new-form-name__input').focus();
             },
             addFieldSelected: function(e){
                 var $body = this.options.$body,

@@ -27,9 +27,11 @@ define([],
                     this.$el.parent().find('.optionsList').append(
                         '<li class="list-group-item" value="'+optionName+'">'+optionName+'<button type="button" class="btn btn-danger btn-xs pull-right">-</button></li>');
                 }
+                this.$el.find('.optionName').focus();
             },
             btnDanger:function(e){
                 $(e.target).parent().remove();
+                this.$el.find('.optionName').focus();
             }
         });
 

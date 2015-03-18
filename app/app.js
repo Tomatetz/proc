@@ -25,7 +25,8 @@ define(['views/form_view'],
 
     $.when(forms.fetch()).then(
         function (status) {
-            console.log(status);
+            //console.log(status);
+            console.log(forms);
             var formView1 = new formView({
                 model: forms,
                 header: 'Выберите действие'
