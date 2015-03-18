@@ -44,7 +44,6 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                     $(this).val();
                 });
                 //console.log(this.$el.find('.new-form-name__input'));
-                this.$el.find('.new-form-name__input').focus();
             },
             addFieldSelected: function(e){
                 var $body = this.options.$body,

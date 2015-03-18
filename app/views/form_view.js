@@ -16,7 +16,7 @@ define(['views/selectComponent-view'],
                 this.model.on('change', this.render, this);
             },
             onRender: function () {
-                this.$el.find('.form-control').datepicker({
+                this.$el.find('.calendar').datepicker({
                     todayBtn: "linked",
                     orientation: "top auto"
                 });
@@ -63,10 +63,16 @@ define(['views/selectComponent-view'],
                     console.log(123);
                     that.model.fetch();
                 });*/
-                this.model.save(parseForm, {success : function (model, response) {
-                    console.log("success");
-                    that.model.fetch()
-                }})
+                if(name!=='') {
+                    this.model.save(parseForm, {
+                        success: function (model, response) {
+                            console.log("success");
+                            that.model.fetch()
+                        }
+                    })
+                } else {
+                    that.$el.find('.new-form-name__input').css('border','1px solid red')
+                }
 
 
             },
@@ -112,6 +118,8 @@ define(['views/selectComponent-view'],
                 });
                 selectComponent.render();
                 $body.append(selectComponent.$el)
+
+                selectComponent.$el.find('.new-form-name__input').focus();
             },
             addSelectForm: function(){
                 var that = this;
