@@ -1,5 +1,5 @@
-define(['views/selectComponent-view'],
-    function (selectComponentView) {
+define(['views/selectComponent-view','views/getFormData'],
+    function (selectComponentView, getFormData) {
 
         var Form = Backbone.Marionette.ItemView.extend({
             events: {
@@ -10,7 +10,11 @@ define(['views/selectComponent-view'],
                 'click [data-action="CancelEditForm"]': 'CancelEditForm',
                 'click [data-action="Back"]': 'buttonClicked',
                 'click [data-action="Save"]': 'saveForm',
-                'click [data-action="SaveEditedForm"]': 'SaveEditedForm'
+                'click [data-action="SaveEditedForm"]': 'SaveEditedForm',
+                'click [data-action="DeleteEditedForm"]': 'DeleteEditedForm',
+                'click [data-action="DeleteFormConfirm"]': 'DeleteFormConfirm',
+                'click [data-action="DeleteFormRefuse"]': 'DeleteFormRefuse',
+                'click [data-action="SaveFormData"]': 'SaveFormData'
             },
             template: "app/templates/form.hbs",
             initialize: function () {
@@ -24,15 +28,17 @@ define(['views/selectComponent-view'],
                 //console.log(this);
             },
             saveForm: function(edited){
+
                 var that=this;
-                if(edited){
+                if(edited=='edited'){
                     var name = that.$el.find('.edit-form-name input').val();
                 } else {
                     var name = that.$el.find('.new-form-name__input').val();
                 }
                 var parseForm = {
                     name: name,
-                    form: []
+                    form: [],
+                    action: 'edit'
                 };
                 this.$el.find('.newElementWrapper').each(function(){
                     var fieldType= $( this ).attr('fieldType');
@@ -63,11 +69,7 @@ define(['views/selectComponent-view'],
                     });
                 });
                 console.log(JSON.stringify(parseForm));
-/*
-                $.when(this.model.save(parseForm), function(){
-                    console.log(123);
-                    that.model.fetch();
-                });*/
+
                 if(name!=='') {
                     this.model.save(parseForm, {
                         success: function (model, response) {
@@ -99,6 +101,8 @@ define(['views/selectComponent-view'],
 
                 $body.find('.menuButtons').toggleClass('hide');
                 $footer.toggleClass('hide');
+
+                this.$el.find('[data-action="SaveFormData"]').hide();
 
             },
             ChooseForm: function (e) {
@@ -135,13 +139,6 @@ define(['views/selectComponent-view'],
                 this.$el.find('.update-form-buttons').hide();
 
                 $body.append('<select class="form-control formsCollecion"><option></option></select>');
-                $body.append('<div class="form-control TEST"></div>');
-
-                var data=[{id:0,text:'enhancement'},{id:1,text:'bug'},{id:2,text:'duplicate'},{id:3,text:'invalid'},{id:4,text:'wontfix'}];
-                $body.find('.TEST').select2({
-                    data:data
-                });
-                //$body.find('.TEST').select2({data:[this.model]})
 
                 var forms = this.model.get('forms');
                 _.each(forms, function(form){
@@ -175,7 +172,47 @@ define(['views/selectComponent-view'],
                 });
             },
             UseForm: function(){
+                var $body = this.$el.find('.menu-body');
+                this.toggleShowingUseFormButtons('hide', $body, this, '');
+                $body.find('.newElementWrapper ').removeClass( "shaded" );
+                this.$el.find('.formsCollecion').hide();
+                this.$el.find('[data-action="SaveFormData"]').show();
+                this.$el.find('[data-action="SaveFormData"] .editedFormName').html(this.name);
+                this.$el.find('#myModalLabel').html(this.name);
+            },
+            SaveFormData: function(){
+                var name = this.name;
 
+                var parsedData = this.ParseFormData();
+                var newFormModel = new getFormData();
+                newFormModel.save({
+                    name: name,
+                    data: parsedData
+                });
+            },
+            ParseFormData: function(form){
+                var parsedData = [];
+                this.$el.find('.newElementWrapper').each(function(){
+                    var type = $( this ).attr('fieldtype');
+                    var value, name;
+                    if(type == 'date'){
+                        value = $(this).find('.calendar').val();
+                        name = $(this).find('.newFieldName').html();
+                    } else if(type == 'textfield'){
+                        value = $(this).find('input').val();
+                        name = $(this).find('.newFieldName').html();
+                    } else if(type == 'checkbox'){
+                        value = $(this).find('[name="newCheckboxField"]').is(':checked');
+                        name = $(this).find('input').attr('value');
+                    }
+                    parsedData.push({
+                        name: name,
+                        value: value
+                    });
+                });
+                console.log(parsedData);
+
+                return parsedData;
             },
             EditLoadedForm: function(a){
                 if(a=='cancelEditing'){
@@ -228,8 +265,44 @@ define(['views/selectComponent-view'],
 
             },
             SaveEditedForm: function(){
-                this.saveForm(true);
-              console.log(this);
+                this.saveForm('edited');
+            },
+            DeleteEditedForm: function(){
+                var $body = this.$el.find('.menu-body');
+
+                this.$el.find('.edit-form-name input').val(this.name);
+                this.toggleShowingUseFormButtons('hide',$body,this, '');
+                this.$el.find('.delete-form-alert').show();
+                this.$el.find('.update-form-buttons').addClass('disabled');
+                this.$el.find('[data-action="Back"]').addClass('disabled');
+
+                this.$el.find('.editedFormName').html(this.name);
+            },
+            DeleteFormRefuse: function(){
+                var $body = this.$el.find('.menu-body');
+
+                this.toggleShowingUseFormButtons('show',$body,this);
+                $body.find('.newElementWrapper ').removeClass( "shaded" );
+                this.$el.find('.delete-form-alert').hide();
+                this.$el.find('.update-form-buttons').removeClass('disabled');
+                this.$el.find('[data-action="Back"]').removeClass('disabled');
+
+                this.$el.find('.editedFormName').html('');
+            },
+            DeleteFormConfirm: function(){
+                var that = this;
+                _.each(this.model.get('forms'), function(form){
+                    if(form.name == that.name){
+                        form.action = 'delete';
+                        that.model.save(form, {
+                            success: function (model, response) {
+                                console.log("success");
+                                that.model.fetch()
+                            }
+                        })
+                    }
+                });
+                this.DeleteFormRefuse();
             }
 
         });

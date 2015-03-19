@@ -45,28 +45,33 @@ servr.get('/form/:id', function(req, res){
 });
 
 servr.post('/form/:id', function(req, res){
-    //console.log(o.forms);
 
     var z = require('../server/forms.json');
     var temp = z;
 
-
     var isNew = true;
-    temp.forms.each( function(form){
-        if(form.name == req.body.name){
-            form.form = req.body.form
-            isNew = false
-        }
-
-        console.log(form.name, req.body.name);
-    });
-
-    if(isNew){
-        temp.forms.push({
-            name: req.body.name,
-            form: req.body.form
+    if(req.body.action && req.body.action == 'delete'){
+        temp.forms.each( function(form, i){
+            if(form.name == req.body.name){
+                temp.forms.splice(i, 1);
+            }
         });
+    } else {
+        temp.forms.each( function(form){
+            if(form.name == req.body.name){
+                form.form = req.body.form
+                isNew = false
+            }
+            //console.log(form.name, req.body.name);
+        });
+        if(isNew){
+            temp.forms.push({
+                name: req.body.name,
+                form: req.body.form
+            });
+        }
     }
+
     res.json(req.body);
     fs.writeFile("server/forms.json", JSON.stringify(temp), function(err) {
         if(err) {
@@ -74,6 +79,13 @@ servr.post('/form/:id', function(req, res){
         }
         console.log("The file was saved!");
     });
+});
+
+
+servr.post('/saveData', function(req, res){
+    console.log(req.body);
+    res.json(req.headers);
+
 });
 
 module.exports = servr;

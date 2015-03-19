@@ -10,7 +10,6 @@
     "handlebars": "~1.3.0",
     "bootstrap-datepicker": "~1.4.0",
     "components-bootstrap": "3.3.2",
-    "marionette": "2.4.1",
-    "select2": "4.0.0-rc.2"
+    "marionette": "2.4.1"
   }
 }

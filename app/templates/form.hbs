@@ -20,14 +20,31 @@
                 </div>
             </div>
             <div class="modal-footer menu-footer hide">
+
+                <div class="alert alert-danger alert delete-form-alert" role="alert">
+                    <span>Вы уверены, что хотите удалить <b class="editedFormName"></b>?</span>
+                    <p class="DeleteFormConfirmButtons-wrapper">
+                        <button type="button" class="btn btn-danger" data-action="DeleteFormConfirm">Удалить</button>
+                        <button type="button" class="btn btn-default" data-action="DeleteFormRefuse">Отмена</button>
+                    </p>
+                </div>
+
                 <div class="pull-left loadedFormActions" role="group">
                     <button type="button" class="btn btn-success use-form-buttons" data-action="UseForm"><i class="fa fa-check"></i> Использовать</button>
                     <button type="button" class="btn btn-warning use-form-buttons" data-action="EditLoadedForm"><i class="fa fa-pencil"></i> Редактировать</button>
                 </div>
                 <button type="button" class="btn btn-info update-form-buttons" data-action="CancelEditForm"><i class="fa fa-angle-double-left"></i> Назад</button>
                 <button type="button" class="btn btn-success update-form-buttons"  data-action="SaveEditedForm"><i class="fa fa-floppy-o"></i> Сохранить</button>
+                <button type="button" class="btn btn-danger update-form-buttons"  data-action="DeleteEditedForm"><i class="fa fa-trash-o"></i> Удалить</button>
+                <button type="button" class="btn btn-success pull-left" data-action="SaveFormData">
+                    <i class="fa fa-floppy-o"></i> Сохранить <span class="editedFormName"></span>
+                </button>
                 <button type="button" class="btn btn-success" data-action="Save"><i class="fa fa-floppy-o"></i> Сохранить</button>
                 <button type="button" class="btn btn-danger" data-action="Back"><i class="fa fa-ban"></i> Отмена</button>
+
+
+
+
             </div>
         </div>
     </div>
