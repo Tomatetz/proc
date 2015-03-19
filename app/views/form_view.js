@@ -135,6 +135,14 @@ define(['views/selectComponent-view'],
                 this.$el.find('.update-form-buttons').hide();
 
                 $body.append('<select class="form-control formsCollecion"><option></option></select>');
+                $body.append('<div class="form-control TEST"></div>');
+
+                var data=[{id:0,text:'enhancement'},{id:1,text:'bug'},{id:2,text:'duplicate'},{id:3,text:'invalid'},{id:4,text:'wontfix'}];
+                $body.find('.TEST').select2({
+                    data:data
+                });
+                //$body.find('.TEST').select2({data:[this.model]})
+
                 var forms = this.model.get('forms');
                 _.each(forms, function(form){
                     $body.find('.formsCollecion').append('<option>'+form.name+'</option>');

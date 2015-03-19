@@ -12,7 +12,8 @@ require.config({
 		'backbone.wreqr'		: '../bower_components/backbone.wreqr/lib/backbone.wreqr',
 		'bootstrap'				: '../bower_components/components-bootstrap/js/bootstrap',
 		'handlebars'			: '../bower_components/handlebars/handlebars',
-		'datepicker'			: '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker'
+		'datepicker'			: '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker',
+		'select2'		    	: '../bower_components/select2/dist/js/select2.full'
 	},
 	shim : {
 		jquery : {
@@ -42,7 +43,12 @@ require.config({
 			deps : ['app']
 		},
 		templates : {
-			deps : ['handlebars']}
+			deps : ['handlebars']
+        },
+        select2 : {
+            deps : ['jquery', 'bootstrap']
+        }
+
 		}
 });
 
@@ -56,7 +62,8 @@ require([
 	"templates",
 	"handlebars",
 	"bootstrap",
-	"datepicker"
+	"datepicker",
+	"select2"
 ],
 function(jquery, backbone, underscore, marionette, app, router) {
 	app.router = new router();
