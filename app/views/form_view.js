@@ -201,7 +201,7 @@ define(['views/selectComponent-view','views/getFormData'],
                         value = $(this).find('input').val();
                         name = $(this).find('.newFieldName').html();
                     } else if(type == 'checkbox'){
-                        value = $(this).find('[name="newCheckboxField"]').is(':checked');
+                        value = $(this).find('[name="newCheckboxField"]').is(':checked')?'checked':false;
                         name = $(this).find('input').attr('value');
                     }
                     parsedData.push({
