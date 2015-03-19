@@ -59,11 +59,10 @@ define(['views/selectComponent-view','views/getFormData'],
                         }
                     };
 
-
                     parseForm.form.push({
                             fieldType: fieldType,
                             fieldName: fieldType == 'checkbox' ?
-                                that.$el.find('[name="newCheckboxField"]').attr('value') : $element.find('.newFieldName').html(),
+                                $element.find('[name="newCheckboxField"]').attr('value') : $element.find('.newFieldName').html(),
                             fieldSize: $(this).attr('fieldSize'),
                             fieldOptions: getOptions() || null
                     });
@@ -207,10 +206,10 @@ define(['views/selectComponent-view','views/getFormData'],
                     }
                     parsedData.push({
                         name: name,
-                        value: value
+                        value: value,
+                        type: type
                     });
                 });
-                console.log(parsedData);
 
                 return parsedData;
             },
