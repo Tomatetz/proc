@@ -1,5 +1,9 @@
-{{ model.paper }}
+{{ options.header }}
+{{ model }}
 <!-- Button trigger modal -->
+<button type="button" class="btn btn-default" data-action="ShowSelectForm" data-toggle="modal" data-target="#selectForm">
+    Выбрать форму
+</button>
 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
     Launch demo modal
 </button>
@@ -15,7 +19,6 @@
             <div class="modal-body menu-body ">
                 <div class="btn-group centered menuButtons" role="group">
                     <button type="button" class="btn btn-default formMenu" data-action="ChooseForm"><i class="fa fa-bars"></i>  Выбрать форму</button>
-                    <!--<button type="button" class="btn btn-default" data-action="EditForm"><i class="fa fa-pencil-square-o"></i> Редактировать форму</button>-->
                     <button type="button" class="btn btn-default formMenu" data-action="CreateForm"><i class="fa fa-plus"></i>  Создать форму</button>
                 </div>
             </div>
@@ -30,7 +33,6 @@
                 </div>
 
                 <div class="pull-left loadedFormActions" role="group">
-                    <button type="button" class="btn btn-success use-form-buttons" data-action="UseForm"><i class="fa fa-check"></i> Использовать</button>
                     <button type="button" class="btn btn-warning use-form-buttons" data-action="EditLoadedForm"><i class="fa fa-pencil"></i> Редактировать</button>
                 </div>
                 <button type="button" class="btn btn-info update-form-buttons" data-action="CancelEditForm"><i class="fa fa-angle-double-left"></i> Назад</button>
@@ -41,10 +43,27 @@
                 </button>
                 <button type="button" class="btn btn-success" data-action="Save"><i class="fa fa-floppy-o"></i> Сохранить</button>
                 <button type="button" class="btn btn-danger" data-action="Back"><i class="fa fa-ban"></i> Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-
-
+<!-- Modal -->
+<div class="modal fade" id="selectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header menu-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Выберите форму</h4>
+            </div>
+            <div class="modal-body menu-body ">
+            </div>
+            <div class="modal-footer menu-footer">
+                <button type="button" class="btn btn-success use-form-buttons" data-action="UseForm"><i class="fa fa-check"></i> Использовать</button>
+                <button type="button" class="btn btn-success pull-left" data-action="SaveFormData">
+                    <i class="fa fa-floppy-o"></i> Сохранить <span class="editedFormName"></span>
+                </button>
+                <button type="button" class="btn btn-danger" data-action="CancelUsingForm"><i class="fa fa-ban"></i> Отмена</button>
             </div>
         </div>
     </div>

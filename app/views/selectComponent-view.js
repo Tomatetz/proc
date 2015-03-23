@@ -149,7 +149,7 @@ define(['views/addedField-view', 'views/addFieldExtended-view'],
                     var fieldSize = fieldName.length<18 ? this.$el.find('.sizeRadioButtons input:radio:checked').val() : 'col-md-12',
                     optionsNames = [],
                     that=this;
-
+                console.log(this);
                 if(fieldType === 'checkbox'||fieldType === 'radio'){
                     fieldSize = fieldName.length<18 ? 'col-md-6' : 'col-md-12';
                 }

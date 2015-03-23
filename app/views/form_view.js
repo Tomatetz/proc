@@ -14,18 +14,24 @@ define(['views/selectComponent-view','views/getFormData'],
                 'click [data-action="DeleteEditedForm"]': 'DeleteEditedForm',
                 'click [data-action="DeleteFormConfirm"]': 'DeleteFormConfirm',
                 'click [data-action="DeleteFormRefuse"]': 'DeleteFormRefuse',
-                'click [data-action="SaveFormData"]': 'SaveFormData'
+                'click [data-action="SaveFormData"]': 'SaveFormData',
+                'click [data-action="ShowSelectForm"]': 'ShowSelectForm',
+                'click [data-action="CancelUsingForm"]': 'CancelUsingForm'
             },
             template: "app/templates/form.hbs",
             initialize: function () {
                 this.model.on('change', this.render, this);
             },
             onRender: function () {
+
                 this.$el.find('.calendar').datepicker({
                     todayBtn: "linked",
                     orientation: "top auto"
                 });
                 //console.log(this);
+            },
+            ShowSelectForm: function(){
+                this.addSelectForm();
             },
             saveForm: function(edited){
 
@@ -90,7 +96,7 @@ define(['views/selectComponent-view','views/getFormData'],
                 var isBackClicked = e ? false : true;
 
                 if(isBackClicked){
-                    $body.find('.formsCollecion').remove();
+                    $body.find('.formsCollection').remove();
                     $body.find('.select-component').remove();
                     $header.find('#myModalLabel').html('Выберите действие');
                 } else {
@@ -107,11 +113,11 @@ define(['views/selectComponent-view','views/getFormData'],
             ChooseForm: function (e) {
                 var buttonColor = '#B3E2B3';
                 this.buttonClicked(buttonColor,e);
-                this.addSelectForm();
+                this.addSelectForm('edit');
             },
             CreateForm: function (e) {
                 var that = this;
-                var $body = this.$el.find('.menu-body'),
+                var $body = this.$el.find('#myModal .menu-body'),
                     $footer = this.$el.find('.menu-footer');
                 var buttonColor = '#C8E1E8';
 
@@ -129,31 +135,38 @@ define(['views/selectComponent-view','views/getFormData'],
 
                 selectComponent.$el.find('.new-form-name__input').focus();
             },
-            addSelectForm: function(){
+            addSelectForm: function(trgt){
                 var that = this;
-                var $body = this.$el.find('.menu-body');
+                if(trgt == 'edit'){
+                    var $body = this.$el.find('#myModal .menu-body'),
+                    $footer = that.$el.find('#myModal .menu-footer');
+                } else {
+                    var $body = this.$el.find('#selectForm .menu-body'),
+                    $footer = that.$el.find('#selectForm .menu-footer');
+                }
                 this.$el.find('[data-action="Save"]').hide();
 
                 this.$el.find('.loadedFormActions').hide();
                 this.$el.find('.update-form-buttons').hide();
+                this.$el.find('.formsCollection').remove();
 
-                $body.append('<select class="form-control formsCollecion"><option></option></select>');
-
+                $body.append('<select class="form-control formsCollection"><option></option></select>');
                 var forms = this.model.get('forms');
                 _.each(forms, function(form){
-                    $body.find('.formsCollecion').append('<option>'+form.name+'</option>');
+                    $body.find('.formsCollection').append('<option class="addedOption">'+form.name+'</option>');
                 });
 
-                $body.find('.formsCollecion').change(function (){
+                $body.find('.formsCollection').change(function (){
                     $body.find('.select-component').remove();
                     var name = $body.find('select option:selected').html();
                     that.name = name;
 
                     _.each(forms, function(form){
+                       // console.log(form.name, name);
                         if(form.name == name){
 
-                            var $body = that.$el.find('.menu-body'),
-                                $footer = that.$el.find('.menu-footer'),
+                            /*var $body = that.$el.find('#selectForm .menu-body'),
+                                $footer = that.$el.find('#selectForm .menu-footer'),*/
                                 form = form || null;
 
                             var selectComponent = new selectComponentView({
@@ -172,12 +185,20 @@ define(['views/selectComponent-view','views/getFormData'],
             },
             UseForm: function(){
                 var $body = this.$el.find('.menu-body');
-                this.toggleShowingUseFormButtons('hide', $body, this, '');
+                this.$el.find('[data-action="UseForm"]').hide();
                 $body.find('.newElementWrapper ').removeClass( "shaded" );
-                this.$el.find('.formsCollecion').hide();
+                this.$el.find('.formsCollection').hide();
                 this.$el.find('[data-action="SaveFormData"]').show();
+                this.$el.find('[data-action="CancelUsingForm"]').show();
                 this.$el.find('[data-action="SaveFormData"] .editedFormName').html(this.name);
                 this.$el.find('#myModalLabel').html(this.name);
+            },
+            CancelUsingForm: function(){
+                this.$el.find('[data-action="UseForm"]').show();
+                this.$el.find('.select-component').remove();
+                this.$el.find('.formsCollection').show();
+                this.$el.find('[data-action="SaveFormData"]').hide();
+                this.$el.find('[data-action="CancelUsingForm"]').hide();
             },
             SaveFormData: function(){
                 var name = this.name;
@@ -203,6 +224,9 @@ define(['views/selectComponent-view','views/getFormData'],
                     } else if(type == 'checkbox'){
                         value = $(this).find('[name="newCheckboxField"]').is(':checked')?'checked':false;
                         name = $(this).find('input').attr('value');
+                    } else if(type == 'select'){
+                        value = $(this).find('select option:selected').html();
+                        name = $(this).find('.newFieldName').html();
                     }
                     parsedData.push({
                         name: name,
@@ -223,7 +247,7 @@ define(['views/selectComponent-view','views/getFormData'],
                     this.$el.find('.edit-buttons-wrapper').hide();
                     this.$el.find('.update-form-buttons').hide();
                     this.$el.find('.loadedFormActions').show();
-                    this.$el.find('.formsCollecion').show();
+                    this.$el.find('.formsCollection').show();
                     this.$el.find('.edit-form-name').hide();
                 } else {
                     this.$el.find('.newElementWrapper ').each(function() {
@@ -233,7 +257,7 @@ define(['views/selectComponent-view','views/getFormData'],
                     this.$el.find('.edit-buttons-wrapper').fadeIn(400);
                     this.$el.find('.update-form-buttons').show();
                     this.$el.find('.loadedFormActions').hide();
-                    this.$el.find('.formsCollecion').hide();
+                    this.$el.find('.formsCollection').hide();
                     this.$el.find('.edit-form-name').show();
 
                     this.$el.find('.edit-form-name input').val(this.name);

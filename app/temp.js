@@ -13,6 +13,48 @@ var fs = require('fs');servr.disable('etag');
      res.setHeader('Cache-Control', 'public, max-age=31557600');
 });*/
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var db = mongoose.createConnection('mongodb://localhost/test');
+
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function callback () {
+    console.log("Connected!")
+});
+var UserSchema = new mongoose.Schema( {
+    name: { type: String, index: true },
+    creation_date: { type: Date },
+    form: [{
+        "fieldType":{ type: String },
+        "fieldName":{ type: String },
+        "fieldSize":{ type: String },
+        "fieldOptions":[]
+    }]
+} );
+
+
+
+UserSchema.methods.speak = function () {
+
+}
+
+var Forms = db.model("Forms",UserSchema)
+//var newUser = new Forms({ name: "VAva", age: 21})
+
+/*newUser.save(function (err, newUser) {
+    if (err){
+        console.log("Something goes wrong with user " + newUser.name);
+    }else{
+        newUser.speak();
+    }
+});*/
+
+//Forms.remove({name: 'Alice'}).exec();
+//
+Forms.find(/*{name: 'Alice'},*/ function (err, users) {
+    //Forms.find({name: 'VAva'}).remove();
+    //console.log(users)
+})
+
 servr.use( bodyParser.json() );       // to support JSON-encoded bodies
 
 servr.use(function (req, res, next) {
@@ -41,26 +83,39 @@ servr.get('/user/:id', function(req, res, next){
     res.json(d);
 });
 servr.get('/form/:id', function(req, res){
-    res.json(o);
+    Forms.find( function (err, users) {
+        res.json({'forms':users})
+    })
+    //res.json(o);
 });
 
 servr.post('/form/:id', function(req, res){
-
     var z = require('../server/forms.json');
     var temp = z;
 
     var isNew = true;
+
+
+    var newForm = new Forms(req.body);
+
     if(req.body.action && req.body.action == 'delete'){
+
         temp.forms.each( function(form, i){
             if(form.name == req.body.name){
                 temp.forms.splice(i, 1);
             }
         });
+        Forms.remove({name: req.body.name}).exec();
+
+        Forms.find(function (err, users) {
+            console.log(users)
+        })
     } else {
         temp.forms.each( function(form){
             if(form.name == req.body.name){
                 form.form = req.body.form
                 isNew = false
+                Forms.remove({name: req.body.name}).exec();
             }
             //console.log(form.name, req.body.name);
         });
@@ -70,6 +125,16 @@ servr.post('/form/:id', function(req, res){
                 form: req.body.form
             });
         }
+
+        newForm.save(function (err, newUser) {
+            if (err){
+                console.log("Something goes wrong with user " + newUser.name);
+            }else{
+                Forms.find(function (err, users) {
+                    console.log(users)
+                })
+            }
+        });
     }
 
     res.json(req.body);

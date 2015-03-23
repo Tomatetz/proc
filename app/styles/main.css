@@ -8408,7 +8408,8 @@ button.close {
   display: none;
 }
 .update-form-buttons,
-[data-action="SaveFormData"] {
+[data-action="SaveFormData"],
+[data-action="CancelUsingForm"] {
   background-color: #FFF;
   color: #000;
   display: none;
