@@ -30,6 +30,14 @@ var UserSchema = new mongoose.Schema( {
         "fieldOptions":[]
     }]
 } );
+var DataSchema = new mongoose.Schema( {
+    name: { type: String, index: true },
+    timestamp: {  type: String },
+    data: [{
+        name: { type: String },
+        value: { type: String }
+    }]
+} );
 
 
 
@@ -37,23 +45,15 @@ UserSchema.methods.speak = function () {
 
 }
 
-var Forms = db.model("Forms",UserSchema)
-//var newUser = new Forms({ name: "VAva", age: 21})
+var Forms = db.model("Forms",UserSchema);
+var FieldsData = db.model("FieldsData",DataSchema);
 
-/*newUser.save(function (err, newUser) {
-    if (err){
-        console.log("Something goes wrong with user " + newUser.name);
-    }else{
-        newUser.speak();
-    }
-});*/
+//FieldsData.remove({}).exec();
 
 //Forms.remove({name: 'Alice'}).exec();
-//
+
 Forms.find(/*{name: 'Alice'},*/ function (err, users) {
-    //Forms.find({name: 'VAva'}).remove();
-    //console.log(users)
-})
+});
 
 servr.use( bodyParser.json() );       // to support JSON-encoded bodies
 
@@ -149,6 +149,17 @@ servr.post('/form/:id', function(req, res){
 
 servr.post('/saveData', function(req, res){
     console.log(req.body);
+
+    var newData = new FieldsData(req.body);
+    newData.save(function (err, newBlank) {
+        if (err){
+            console.log("Something goes wrong with user " + newBlank.name);
+        }else{
+            FieldsData.find(function (err, users) {
+                console.log(users)
+            })
+        }
+    });
     res.json(req.headers);
 
 });

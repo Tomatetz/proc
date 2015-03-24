@@ -64,7 +64,6 @@ define(['views/selectComponent-view','views/getFormData'],
                             return options;
                         }
                     };
-
                     parseForm.form.push({
                             fieldType: fieldType,
                             fieldName: fieldType == 'checkbox' ?
@@ -91,7 +90,7 @@ define(['views/selectComponent-view','views/getFormData'],
             buttonClicked: function(color, e){
                 var $header = this.$el.find('.menu-header'),
                     $body = this.$el.find('.menu-body'),
-                    $footer = this.$el.find('.menu-footer');
+                    $footer = this.$el.find('#myModal .menu-footer');
 
                 var isBackClicked = e ? false : true;
 
@@ -185,13 +184,19 @@ define(['views/selectComponent-view','views/getFormData'],
             },
             UseForm: function(){
                 var $body = this.$el.find('.menu-body');
+                //var $body = this.$el.find('#selectForm ');
                 this.$el.find('[data-action="UseForm"]').hide();
+                this.$el.find('#selectForm #myModalLabel').hide();
                 $body.find('.newElementWrapper ').removeClass( "shaded" );
                 this.$el.find('.formsCollection').hide();
                 this.$el.find('[data-action="SaveFormData"]').show();
                 this.$el.find('[data-action="CancelUsingForm"]').show();
-                this.$el.find('[data-action="SaveFormData"] .editedFormName').html(this.name);
                 this.$el.find('#myModalLabel').html(this.name);
+                this.$el.find('[data-action="SaveFormData"] .editedFormName').html(this.name);
+                if(this.name.length>18){
+                    this.$el.find('[data-action="SaveFormData"]')
+                        .attr('title', 'Сохранить '+this.name).tooltip();
+                }
             },
             CancelUsingForm: function(){
                 this.$el.find('[data-action="UseForm"]').show();
@@ -199,13 +204,19 @@ define(['views/selectComponent-view','views/getFormData'],
                 this.$el.find('.formsCollection').show();
                 this.$el.find('[data-action="SaveFormData"]').hide();
                 this.$el.find('[data-action="CancelUsingForm"]').hide();
+                this.$el.find('#selectForm #myModalLabel').show();
             },
             SaveFormData: function(){
                 var name = this.name;
 
                 var parsedData = this.ParseFormData();
+
+                var time = new Date().getTime();
+                //var date = new Date(time);
+
                 var newFormModel = new getFormData();
                 newFormModel.save({
+                    timestamp: time,
                     name: name,
                     data: parsedData
                 });
@@ -298,8 +309,6 @@ define(['views/selectComponent-view','views/getFormData'],
                 this.$el.find('.delete-form-alert').show();
                 this.$el.find('.update-form-buttons').addClass('disabled');
                 this.$el.find('[data-action="Back"]').addClass('disabled');
-
-                this.$el.find('.editedFormName').html(this.name);
             },
             DeleteFormRefuse: function(){
                 var $body = this.$el.find('.menu-body');
@@ -309,8 +318,6 @@ define(['views/selectComponent-view','views/getFormData'],
                 this.$el.find('.delete-form-alert').hide();
                 this.$el.find('.update-form-buttons').removeClass('disabled');
                 this.$el.find('[data-action="Back"]').removeClass('disabled');
-
-                this.$el.find('.editedFormName').html('');
             },
             DeleteFormConfirm: function(){
                 var that = this;

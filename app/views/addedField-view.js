@@ -35,7 +35,7 @@ define(['views/editFieldButtons-view'],
                     this.$el.find('input').datepicker({
                         format: "dd/mm/yyyy",
                         todayBtn: "linked",
-                        orientation: "auto right"
+                        orientation: "top"
                     });
                 } else if(fieldType==='select'){
                     _.each(options, function(option){

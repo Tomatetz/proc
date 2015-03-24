@@ -8456,3 +8456,8 @@ button.close {
 .DeleteFormConfirmButtons-wrapper {
   margin-top: 5px;
 }
+[data-action="SaveFormData"] {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
